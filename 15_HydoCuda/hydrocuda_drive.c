@@ -9,7 +9,7 @@
 
 //global variables
 
-
+//estoy editando
 int main (int argc, char *argv[])
 {
 // Variable declraration
