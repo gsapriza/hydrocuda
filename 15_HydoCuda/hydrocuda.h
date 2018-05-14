@@ -8,8 +8,8 @@
 // General Program Options
 
 typedef struct {
-  char  domainModel[8];
-  char  meteoModel[5];
+  char  domainModel[8];//*
+  char  meteoModel[5];//*
   int  istimeblock;
 } model_option;
 
@@ -48,7 +48,8 @@ typedef struct{
 typedef struct{
   float *area[]; // Area of each grid cell
   int   *ldd[];  // Directions
-} model_topology
+} model_topology;
+
 // Parameter definition for hbv
 // Model class acá agregamos lo de las clasess de C++
 typedef struct {
@@ -82,6 +83,17 @@ typedef struct{
   char longname[25];
 } meteo_info;
 
+//Structures declaration
+model_options optns;
+model_domain dom;
+model_time times;
+model_topology topo*;
+meteo_forcing forcing*;
+meteo_info info;
+//no se si ya definirla aca
+param_hbv params; // agregar resto de parametros
+state_hbv state; // agregar resto de estados
+flux_hbv flux; // agregar resto de flujos
 
 void init_modeloptions()
 void init_domain(*model_domain)
