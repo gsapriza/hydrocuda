@@ -9,7 +9,7 @@
 // General Program Options
 
 typedef struct {
-  ini_t  *config;
+  struct ini_t  *config;
   char  domainModel[8];
   char  meteoModel[5];
   int  istimeblock;
