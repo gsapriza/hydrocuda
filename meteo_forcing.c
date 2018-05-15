@@ -7,19 +7,21 @@
 
 #include "hydrocuda.h"
 
+extern model_option options;
+extern model_domain domain;
+
 void init_forcing(meteo_forcing *forcing){
-
-
-  if (optns.meteoModel == 'Pp&Ev'){
-    forcing.nmeteo = 2;
+  
+  if (options.meteoModel == 'Pp&Ev'){
+    forcing->nmeteo = 2;
     //Allocate meteo_info
     forcing->info = (meteo_info *)malloc(forcing.nmeteo * sizeof(meteo_info));
-    forcing->info[0].units    = 'mm/day'; //Units have to be set from options
-    forcing->info[0].name     = 'precip';
-    forcing->info[0].longname = 'precipitation';
-    forcing->info[1].units    = 'mm/day';
-    forcing->info[1].name     = 'evap';
-    forcing->info[1].longname = 'PotEvapotranspiration';
+    forcing->info[0]->units    = 'mm/day'; //Units have to be set from options
+    forcing->info[0]->name     = 'precip';
+    forcing->info[0]->longname = 'precipitation';
+    forcing->info[1]->units    = 'mm/day';
+    forcing->info[1]->name     = 'evap';
+    forcing->info[1]->longname = 'PotEvapotranspiration';
   }
 }
 
@@ -28,9 +30,9 @@ void allocate_forcing(meteo_forcing *forcing){
   // We shoud distingush between ntime block allocating,
   // All time steps or in each time step
 
-  if (optns.meteoModel == 'Pp&Ev'){
-    forcing->precip = (*float)*malloc(sizof(float)*mxy.nx*mxy.ny*mt.ntblock)
-    forcing->pet    = (*float)*malloc(sizof(float)*mxy.nx*mxy.ny*mt.ntblock)
+  if (options.meteoModel == 'Pp&Ev'){
+    forcing->precip = (*float)*malloc(sizeof(float)*domain.ntgt*modeltime.nt);
+    forcing->pet    = (*float)*malloc(sizeof(float)*domain.ntgt*modeltime.nt);
   }
 }
 // 
@@ -43,11 +45,11 @@ void allocate_forcing(meteo_forcing *forcing){
 // }
 
 void free_forcing(meteo_forcing *forcing){
-
-  if (optns.meteoModel == 'PpyEv'){
-    free(forcing->info)
-    free(forcing->precip)
-    free(forcing->pet)
+  
+  if (options.meteoModel == 'Pp&Ev'){
+    free(forcing->info);
+    free(forcing->precip);
+    free(forcing->pet);
   }
 
 }
