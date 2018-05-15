@@ -12,8 +12,10 @@ void init_modeloptions(){
   // optns.domainModel =  'gridcells';
   // optns.meteoModel  = 'Pp&Ev';
   // optns.istimeblock = 1;
-  ini_sget(options.config, "ModelDomain", "suport_type", "%s", optns.domainModel);
-  ini_sget(options.config, "MeteoModel", "forcing_type", "%s",  optns.meteoModel);
-  ini_sget(options.config, "TimeControl", "isblock", "%d", optns.istimeblock);
+  ini_sget(options.config, "ModelDomain", "suport_type", "%s", options.domainModel);
+  ini_sget(options.config, "MeteoModel", "forcing_type", "%s",  options.meteoModel);
+  char caux[15];
+  ini_sget(options.config, "TimeControl", "isblock", "%s", caux);
+  options.istimeblock = atoi(caux); //char to int
 
 }
