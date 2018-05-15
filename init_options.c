@@ -5,17 +5,18 @@
 * using c and cuda
 *******************/
 #include "hydrocuda.h"
-
+#include <stdlib.h>
 
 void init_modeloptions(){
-
+  
+  extern model_option options; //call options decleared in main
   // optns.domainModel =  'gridcells';
   // optns.meteoModel  = 'Pp&Ev';
   // optns.istimeblock = 1;
   ini_sget(options.config, "ModelDomain", "support_type", "%s", options.domainModel);
   ini_sget(options.config, "MeteoModel", "forcing_type", "%s",  options.meteoModel);
-  char caux[15];
+  char caux[15]; //auxiliar to read integer
   ini_sget(options.config, "TimeControl", "isblock", "%s", caux);
   options.istimeblock = atoi(caux); //char to int
-
+  
 }
