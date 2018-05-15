@@ -10,10 +10,11 @@
 void init_domain(){
 
   //This can be another alternative don't pass as
-  //extern model_domain domain
-
-  if (optns.domainModel == 'gridcells'){
-    domain.nx   = 2;
+  extern model_domain options
+  extern model_domain domain
+  
+  if (options.domainModel == 'gridcells'){
+    domain.nx   = 2; //estas opciones estarian dentro de options??
     domain.ny   = 2;
     domain.ntgt = domain.nx*domain.ny;
     domain.dx   = 1000.0;
