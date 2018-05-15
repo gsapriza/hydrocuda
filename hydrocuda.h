@@ -74,12 +74,10 @@ typedef struct{
   char units[10];
   char name[15];
   char longname[25];
+  float *meteo;
 } meteo_info;
 
 typedef struct {
-  float *precip;  // Precipitation
-  float *pet;     // Potential Evapotranspiration
-  float *tair;    // Air Temperature
   int    nmeteo;    // Number of meteorological variables to be used
   meteo_info   *info; // Variables id to be initialized
 } meteo_forcing;
