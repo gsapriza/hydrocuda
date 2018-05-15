@@ -32,7 +32,7 @@ int main (int argc, char *argv[])
     // init_params();
     // init_states();
     init_times();
-    init_forcing(forcing); //init forcing
+    init_forcing(&forcing); //init forcing
     //Aca es donde iteramos por bloques llamando a la f
     // evaluate_model()
     // for(itblock = 0; itblock<nblock,itblock++){
