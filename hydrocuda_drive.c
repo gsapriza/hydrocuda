@@ -17,7 +17,7 @@ int main (int argc, char *argv[])
 {
     // Variable declraration
     meteo_forcing *forcing; //Declare as pointer forcing
-    model_time *modeltime;
+    model_time *modeltime; //tiene que declararse aca??
     // Model Initialization
 
     if(argc < 2){
