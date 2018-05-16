@@ -5,11 +5,11 @@
 * using c and cuda
 *******************/
 
-#include "hydrocuda.h"
 #include <stdio.h>
 #include <stdlib.h>
-//global variables
+#include "hydrocuda.h"
 
+//Global variables
 model_option options;
 model_domain domain;
 //model_time *modeltime;
