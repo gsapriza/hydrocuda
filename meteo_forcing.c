@@ -9,6 +9,7 @@
 
 extern model_option options;
 extern model_domain domain;
+//extern moderl_time modeltime;
 
 void init_forcing(meteo_forcing *forcing){
   
@@ -25,7 +26,7 @@ void init_forcing(meteo_forcing *forcing){
   }
 }
 
-void allocate_forcing(meteo_forcing *forcing){
+void allocate_forcing(meteo_forcing *forcing, model_time *modeltime){
   // Allocation and setting to zero
   // We shoud distingush between ntime block allocating,
   // All time steps or in each time step
