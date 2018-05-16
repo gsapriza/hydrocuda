@@ -16,12 +16,12 @@ void init_forcing(meteo_forcing *forcing){
     forcing->nmeteo = 2;
     //Allocate meteo_info
     forcing->info = (meteo_info *)malloc(forcing.nmeteo * sizeof(meteo_info));
-    forcing->info[0]->units    = 'mm/day'; //Units have to be set from options
-    forcing->info[0]->name     = 'precip';
-    forcing->info[0]->longname = 'precipitation';
-    forcing->info[1]->units    = 'mm/day';
-    forcing->info[1]->name     = 'evap';
-    forcing->info[1]->longname = 'PotEvapotranspiration';
+    forcing->info[0].units    = 'mm/day'; //Units have to be set from options
+    forcing->info[0].name     = 'precip';
+    forcing->info[0].longname = 'precipitation';
+    forcing->info[1].units    = 'mm/day';
+    forcing->info[1].name     = 'evap';
+    forcing->info[1].longname = 'PotEvapotranspiration';
   }
 }
 
