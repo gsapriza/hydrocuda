@@ -80,8 +80,8 @@ typedef struct{
 typedef struct {
   int    nmeteo;    // Number of meteorological variables to be used
   meteo_info   *info; // Variables id to be initialized
-  float *precip; // Precipitation
-  float *pet; // Potential evapotranspiration
+  //float *precip; // Precipitation
+  //float *pet; // Potential evapotranspiration
 } meteo_forcing;
 
 
