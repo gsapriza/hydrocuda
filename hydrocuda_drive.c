@@ -12,12 +12,13 @@
 
 model_option options;
 model_domain domain;
+//model_time *modeltime;
 
 int main (int argc, char *argv[])
 {
     // Variable declraration
     meteo_forcing *forcing; //Declare as pointer forcing
-    model_time *modeltime; //tiene que declararse aca??
+    model_time *modeltime;
     // Model Initialization
 
     if(argc < 2){
