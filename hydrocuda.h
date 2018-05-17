@@ -84,7 +84,9 @@ typedef struct {
   //float *pet; // Potential evapotranspiration
 } meteo_forcing;
 
-
+typedef struct {
+  char *mids; //ids to get meteo info
+} meteo_ids;
 
 
 void init_modeloptions();
