@@ -20,8 +20,8 @@ void init_forcing(meteo_forcing *forcing){
     forcing->nmeteo = 2; // Precip and pet
     // For loading forcing options
     meteo_ids *met_ids = (meteo_ids*) malloc(forcing->nmeteo * sizeof(meteo_ids));
-    strcpy(met_ids[0].mids,"Pp");
-    strcpy(met_ids[1].mids,"Ev");
+    strcpy(met_ids[0].mids,"Pp"); // Precipitation
+    strcpy(met_ids[1].mids,"Ev"); // Potential evotranspiration
     // Auxiliar
     meteo_ids *met_ids_aux = (meteo_ids*) malloc(forcing->nmeteo * sizeof(meteo_ids));
     strcpy(met_ids_aux[0].mids,"Pp");
