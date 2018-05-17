@@ -71,9 +71,9 @@ typedef struct {
 } flux_hbv;
 
 typedef struct{
-  char units[10];
-  char name[15];
-  char longname[25];
+  char units[15];
+  char name[20];
+  char longname[40];
   float *meteo;
 } meteo_info;
 
@@ -85,7 +85,7 @@ typedef struct {
 } meteo_forcing;
 
 typedef struct {
-  char *mids; //ids to get meteo info
+  char mids[30]; //ids to get meteo info
 } meteo_ids;
 
 
