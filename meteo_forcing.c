@@ -55,7 +55,7 @@ void allocate_forcing(meteo_forcing *forcing, model_time *modeltime){
   // All time steps or in each time step
   
   for (int i = 0; i < forcing->nmeteo; i++){
-    forcing->info.meteo = (float*) malloc(sizeof(float) * domain.ntgt * modeltime->nt);
+    forcing->info[i].meteo = (float*) malloc(sizeof(float) * domain.ntgt * modeltime->nt);
     //forcing->precip = (float*)*malloc(sizeof(float)*domain.ntgt*modeltime.nt);
     //forcing->pet    = (float*)*malloc(sizeof(float)*domain.ntgt*modeltime.nt);
   }
@@ -71,8 +71,8 @@ void allocate_forcing(meteo_forcing *forcing, model_time *modeltime){
 
 void free_forcing(meteo_forcing *forcing){
   
-  if (options.meteoModel == 'Pp&Ev'){
-    free(forcing->info);
+  for (int i = 0; i < forcing->nmeteo; i++){
+    free(forcing->info[i].meteo);
     //free(forcing->precip);
     //free(forcing->pet);
   }
