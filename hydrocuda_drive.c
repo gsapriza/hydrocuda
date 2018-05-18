@@ -9,23 +9,23 @@
 #include <stdlib.h>
 #include "hydrocuda.h"
 
-//Global variables
+// Global variables
 model_option options;
 model_domain domain;
-//model_time *modeltime;
+model_time modeltime;
 
 int main (int argc, char *argv[])
 {
     // Variable declraration
     meteo_forcing *forcing; //Declare as pointer forcing
-    model_time *modeltime;
+    //model_time *modeltime;
     // Model Initialization
 
     if(argc < 2){
       printf("Usage : ./a.out <filename>");
       exit(0);
     }
-    options.config=ini_load(argv[1]);
+    options.config = ini_load(argv[1]);
 
     init_modeloptions();
     init_domain();
