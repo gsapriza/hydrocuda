@@ -12,7 +12,7 @@
 
 extern model_option options;
 extern model_domain domain;
-//extern model_time modeltime;
+extern model_time modeltime;
 
 void init_forcing(meteo_forcing *forcing){
   
@@ -49,13 +49,13 @@ void init_forcing(meteo_forcing *forcing){
   //forcing->info[1].longname = 'PotEvapotranspiration';
 }
 
-void allocate_forcing(meteo_forcing *forcing, model_time *modeltime){
+void allocate_forcing(meteo_forcing *forcing){
   // Allocation and setting to zero
   // We shoud distingush between ntime block allocating,
   // All time steps or in each time step
   
   for (int i = 0; i < forcing->nmeteo; i++){
-    forcing->info[i].meteo = (float*) malloc(sizeof(float) * domain.ntgt * modeltime->nt);
+    forcing->info[i].meteo = (float*) malloc(sizeof(float) * domain.ntgt * modeltime.nt);
     //forcing->precip = (float*)*malloc(sizeof(float)*domain.ntgt*modeltime.nt);
     //forcing->pet    = (float*)*malloc(sizeof(float)*domain.ntgt*modeltime.nt);
   }
