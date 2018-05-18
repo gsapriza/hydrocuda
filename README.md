@@ -1,2 +1,3 @@
-# hydrocuda
-hydrological models with cuda
+# C/Cuda Hydrological Model
+Hydrological models with c and cuda
+
