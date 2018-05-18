@@ -9,3 +9,11 @@
 #include <stdlib.h>
 #include "hydrocuda.h"
 
+extern model_option options;
+extern model_domain domain;
+extern model_time modeltime;
+
+void init_times(){
+  
+  
+}
