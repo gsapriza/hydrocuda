@@ -24,7 +24,6 @@ typedef struct{
   float dy;      // Space discretization y direction
 } model_domain;
 
-
 // Model time discretization
 typedef struct{
     char freq;          // Time frequency
@@ -92,6 +91,7 @@ typedef struct {
 // Function declaration
 void init_modeloptions();
 void init_domain();
+void init_times();
 
 //Function declaration asociated with meteorological forcing
 void init_forcing();
