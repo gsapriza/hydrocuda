@@ -15,7 +15,7 @@ void init_modeloptions(){
   // optns.domainModel =  'gridcells';
   // optns.meteoModel  = 'Pp&Ev';
   // optns.istimeblock = 1;
-  ini_sget(options.config, "Model", "model", "%s", options.model);
+  ini_sget(options.config, "HydroModel", "hydro_model", "%s", options.hydroModel);
   ini_sget(options.config, "ModelDomain", "support_type", "%s", options.domainModel);
   ini_sget(options.config, "MeteoModel", "forcing_type", "%s",  options.meteoModel);
   char caux[15]; //auxiliar to read integer
