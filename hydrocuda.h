@@ -6,10 +6,11 @@
 *******************/
 
 #include "ini.h"
-// General Program Options
 
+// General Program Options
 typedef struct {
   struct ini_t *config;         // Configuration to read options
+  char          model[10];      // Hydrological model
   char          domainModel[8]; // Basin discretization
   char          meteoModel[5];  // Time series options
   int           istimeblock;    // 
@@ -70,6 +71,7 @@ typedef struct {
   float *qbase; //
 } flux_hbv;
 
+// Meteorological forcing structures
 typedef struct{
   char   units[15];    // Time series units
   char   name[20];     // Name of time series
