@@ -10,7 +10,7 @@
 // General Program Options
 typedef struct {
   struct ini_t *config;         // Configuration to read options
-  char          model[10];      // Hydrological model
+  char          hydroModel[10]; // Hydrological model
   char          domainModel[8]; // Basin discretization
   char          meteoModel[5];  // Time series options
   int           istimeblock;    // 
@@ -53,7 +53,22 @@ typedef struct{
 } model_topology;
 
 // Parameter definition for hbv
-// Model class acá agregamos lo de las clasess de C++
+// // Model class acá agregamos lo de las clasess de C++
+typedef struct{
+  char  units[15];    // Time series units
+  char  name[20];     // Name of time series
+  char  longname[40]; // Long name of time series
+  float vars;         // Time series
+} vars_info;
+
+typedef struct {
+  int        nparam;  // Number of parameters
+  int        nstates; // Number of states variables
+  int        nflows;  // Number of flows
+  vars_info *info;    // Variables id to be initialized
+} model_vars;
+
+/*
 typedef struct {
     float *field_capacity;
     float *kquick;
@@ -70,6 +85,7 @@ typedef struct {
   float *qintf; // Inferflow runoff generation
   float *qbase; //
 } flux_hbv;
+*/
 
 // Meteorological forcing structures
 typedef struct{
