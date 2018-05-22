@@ -17,8 +17,8 @@ model_time modeltime;
 int main (int argc, char *argv[])
 {
     // Variable declraration
-    meteo_forcing *forcing; //Declare as pointer forcing
-    //model_time *modeltime;
+    meteo_forcing forcing; //Declare as pointer forcing
+    model_vars modelvars;
     // Model Initialization
 
     if(argc < 2){
@@ -30,8 +30,8 @@ int main (int argc, char *argv[])
     init_modeloptions();
     init_domain();
     // set_options(in_file);
-    init_params();
-    init_states();
+    init_params(&modelvars);
+    init_states(&modelvars);
     init_times();
     init_forcing(&forcing); //init forcing
     //Aca es donde iteramos por bloques llamando a la f
