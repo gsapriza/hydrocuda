@@ -94,6 +94,7 @@ typedef struct {
 void init_modeloptions();
 void init_domain();
 void init_times();
+void init_states();
 
 //Function declaration asociated with meteorological forcing
 void init_forcing();
