@@ -30,8 +30,8 @@ int main (int argc, char *argv[])
     init_modeloptions();
     init_domain();
     // set_options(in_file);
-    // init_params();
-    // init_states();
+    init_params();
+    init_states();
     init_times();
     init_forcing(&forcing); //init forcing
     //Aca es donde iteramos por bloques llamando a la f
