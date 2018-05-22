@@ -13,7 +13,15 @@ extern model_option options;
 extern model_domain domain;
 extern model_time modeltime;
 
-void init_states(){
+void init_states(model_vars modelvars){
   
+  char caux[15]; //auxiliar to read integer
+  if (options.hydroModel == "HBV"){
+    modelvars.nstates = 3;
+  }
+  for ()
+    ini_sget(options.config, "MeteoModel", "init_states", "%s", caux);
+    params_states.init_states = atoi(caux);
+  }
   
 }
