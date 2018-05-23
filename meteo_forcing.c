@@ -16,7 +16,7 @@ extern model_time modeltime;
 
 void init_forcing(meteo_forcing forcing){
   
-  if (options.meteoModel == 'Pp&Ev'){
+  if (options.meteoModel == "Pp&Ev"){
     forcing.nmeteo = 2; // Precip and pet
     // For loading forcing options
     aux_ids *met_ids = (aux_ids*) malloc(forcing.nmeteo * sizeof(aux_ids));
@@ -27,7 +27,7 @@ void init_forcing(meteo_forcing forcing){
     strcpy(met_ids_aux[0].ids,"Pp");
     strcpy(met_ids_aux[1].ids,"Ev");
   }
-  else if (options.meteoModel == 'Pp&Penman'){
+  else if (options.meteoModel == "Pp&Penman"){
     forcing.nmeteo = 8; // Precip and variables to Penman pet calc
   }
   // Allocate meteo_info
