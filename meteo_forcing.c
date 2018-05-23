@@ -19,13 +19,13 @@ void init_forcing(meteo_forcing forcing){
   if (options.meteoModel == 'Pp&Ev'){
     forcing.nmeteo = 2; // Precip and pet
     // For loading forcing options
-    meteo_ids *met_ids = (meteo_ids*) malloc(forcing.nmeteo * sizeof(meteo_ids));
-    strcpy(met_ids[0].mids,"Pp"); // Precipitation
-    strcpy(met_ids[1].mids,"Ev"); // Potential evotranspiration
+    aux_ids *met_ids = (aux_ids*) malloc(forcing.nmeteo * sizeof(aux_ids));
+    strcpy(met_ids[0].ids,"Pp"); // Precipitation
+    strcpy(met_ids[1].ids,"Ev"); // Potential evotranspiration
     // Auxiliar
-    meteo_ids *met_ids_aux = (meteo_ids*) malloc(forcing.nmeteo * sizeof(meteo_ids));
-    strcpy(met_ids_aux[0].mids,"Pp");
-    strcpy(met_ids_aux[1].mids,"Ev");
+    aux_ids *met_ids_aux = (aux_ids*) malloc(forcing.nmeteo * sizeof(aux_ids));
+    strcpy(met_ids_aux[0].ids,"Pp");
+    strcpy(met_ids_aux[1].ids,"Ev");
   }
   else if (options.meteoModel == 'Pp&Penman'){
     forcing.nmeteo = 8; // Precip and variables to Penman pet calc
@@ -33,7 +33,7 @@ void init_forcing(meteo_forcing forcing){
   // Allocate meteo_info
   forcing.info = (meteo_info*) malloc(forcing.nmeteo * sizeof(meteo_info));
   // Read variables
-  for (int i = 0; i < forcing->nmeteo; i++){
+  for (int i = 0; i < forcing.nmeteo; i++){
     ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_units"), "%s", forcing.info[i].units);
     strcpy(met_ids[i].ids,met_ids_aux[i].ids);
     ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_name"), "%s", forcing.info[i].name);
@@ -49,7 +49,7 @@ void init_forcing(meteo_forcing forcing){
   //forcing->info[1].longname = 'PotEvapotranspiration';
 }
 
-void allocate_forcing(meteo_forcing .forcing){
+void allocate_forcing(meteo_forcing forcing){
   // Allocation and setting to zero
   // We shoud distingush between ntime block allocating,
   // All time steps or in each time step
