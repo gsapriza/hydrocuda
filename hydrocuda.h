@@ -55,17 +55,18 @@ typedef struct{
 // Parameter definition for hbv
 // // Model class acá agregamos lo de las clasess de C++
 typedef struct{
-  char  units[15];    // Time series units
-  char  name[20];     // Name of time series
-  char  longname[40]; // Long name of time series
-  float vars;         // Time series
+  char   units[15];    // Time series units
+  char   name[20];     // Name of time series
+  char   longname[40]; // Long name of time series
+  float *vars;         // Time series
 } vars_info;
 
 typedef struct {
-  int        nparam;  // Number of parameters
-  int        nstates; // Number of states variables
-  int        nflows;  // Number of flows
-  vars_info *info;    // Variables id to be initialized
+//   int        nparam;  // Number of parameters
+//   int        nstates; // Number of states variables
+//   int        nflows;  // Number of flows
+  int        nvars; // Number of variables (parameters, states and flows)
+  vars_info *info;  // Variables id to be initialized
 } model_vars;
 
 /*
@@ -103,8 +104,8 @@ typedef struct {
 } meteo_forcing;
 
 typedef struct {
-  char mids[30]; //ids to get meteo info
-} meteo_ids;
+  char ids[30]; //ids to get meteo info
+} aux_ids;
 
 // Function declaration
 void init_modeloptions();
