@@ -3,7 +3,7 @@
 *
 * Set of hydrologic models to simulate the hydrological model response
 * using c and cuda
-*******************/
+***************/
 
 #include "ini.h"
 
@@ -13,7 +13,7 @@ typedef struct {
   char          hydroModel[10]; // Hydrological model
   char          domainModel[8]; // Basin discretization
   char          meteoModel[5];  // Time series options
-  int           istimeblock;    // 
+  int           istimeblock;    // 1 if divide time in block, 0 if not
 } model_option;
 
 // General Model domain discretization
