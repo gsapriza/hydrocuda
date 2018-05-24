@@ -111,12 +111,15 @@ typedef struct {
 void init_modeloptions();
 void init_domain();
 void init_times();
-void init_psf();
 
-//Function declaration asociated with meteorological forcing
+// Parameters, states and flows
+void init_psf();
+void allocate_psf();
+void free_psf();
+
+// Meteorological forcing
 void init_forcing();
 void allocate_forcing();
-
 // void read_forcing_netdf4();
 // void update_forcing();
-// void free_forcing();
+void free_forcing();
