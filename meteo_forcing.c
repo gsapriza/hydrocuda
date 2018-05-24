@@ -40,6 +40,8 @@ void init_forcing(meteo_forcing forcing){
     strcpy(met_ids[i].ids,met_ids_aux[i].ids);
     ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_longname"), "%s", forcing.info[i].longname);
     strcpy(met_ids[i].ids,met_ids_aux[i].ids);
+    ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_location"), "%s", forcing.info[i].location);
+    strcpy(met_ids[i].ids,met_ids_aux[i].ids);
   }
   //forcing->info[0].units    = 'mm/day'; //Units have to be set from options
   //forcing->info[0].name     = 'precip';
