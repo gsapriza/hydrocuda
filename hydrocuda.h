@@ -55,10 +55,11 @@ typedef struct{
 // Parameter definition for hbv
 // // Model class acá agregamos lo de las clasess de C++
 typedef struct{
-  char   units[15];    // Time series units
-  char   name[20];     // Name of time series
-  char   longname[40]; // Long name of time series
-  float *vars;         // Time series
+  char   units[15];     // Time series units
+  char   name[20];      // Name of time series
+  char   longname[40];  // Long name of time series
+  char   location[100]; // Location of time series data
+  float *vars;          // Time series
 } vars_info;
 
 typedef struct {
@@ -93,6 +94,7 @@ typedef struct{
   char   units[15];    // Time series units
   char   name[20];     // Name of time series
   char   longname[40]; // Long name of time series
+  char   location[100]; // Location of time series data
   float *meteo;        // Time series
 } meteo_info;
 
