@@ -14,23 +14,23 @@ extern model_option options;
 extern model_domain domain;
 extern model_time modeltime;
 
-void init_forcing(meteo_forcing forcing){
+void init_forcing(model_vars forcing){
   
   if (options.meteoModel == "Pp&Ev"){
-    forcing.nmeteo = 2; // Precip and pet
+    forcing.nvars = 2; // Precip and pet
     // For loading forcing options
-    aux_ids *met_ids = (aux_ids*) malloc(forcing.nmeteo * sizeof(aux_ids));
+    aux_ids *met_ids = (aux_ids*) malloc(forcing.nvars * sizeof(aux_ids));
     strcpy(met_ids[0].ids,"Pp"); // Precipitation
     strcpy(met_ids[1].ids,"Ev"); // Potential evotranspiration
   }
   else if (options.meteoModel == "Pp&Penman"){
-    forcing.nmeteo = 8; // Precip and variables to Penman pet calc
+    forcing.nvars = 8; // Precip and variables to Penman pet calc
   }
   // Allocate auxiliar
-  aux_ids *met_ids_aux = (aux_ids*) malloc(forcing.nmeteo * sizeof(aux_ids));
+  aux_ids *met_ids_aux = (aux_ids*) malloc(forcing.nvars * sizeof(aux_ids));
   // Allocate meteo_info
-  forcing.info = (meteo_info*) malloc(forcing.nmeteo * sizeof(meteo_info));
-  for (int i = 0; i < forcing.nmeteo; i++){
+  forcing.info = (vars_info*) malloc(forcing.nvars * sizeof(vars_info));
+  for (int i = 0; i < forcing.nvars; i++){
     // Fill auxiliar
     strcpy(var_ids_aux[i].ids,met_ids[i].ids);
     // Read variables
@@ -54,13 +54,13 @@ void init_forcing(meteo_forcing forcing){
   //forcing->info[1].longname = 'PotEvapotranspiration';
 }
 
-void allocate_forcing(meteo_forcing forcing){
+void allocate_forcing(model_vars forcing){
   // Allocation and setting to zero
   // We shoud distingush between ntime block allocating,
   // All time steps or in each time step
   
-  for (int i = 0; i < forcing.nmeteo; i++){
-    forcing.info[i].meteo = (float*) malloc(sizeof(float) * domain.ntgt * modeltime.nt);
+  for (int i = 0; i < forcing.nvars; i++){
+    forcing.info[i].vars = (float*) malloc(sizeof(float) * domain.ntgt * modeltime.nt);
     //forcing->precip = (float*)*malloc(sizeof(float)*domain.ntgt*modeltime.nt);
     //forcing->pet    = (float*)*malloc(sizeof(float)*domain.ntgt*modeltime.nt);
   }
@@ -74,10 +74,10 @@ void allocate_forcing(meteo_forcing forcing){
 //
 // }
 
-void free_forcing(meteo_forcing forcing){
+void free_forcing(model_vars forcing){
   
-  for (int i = 0; i < forcing.nmeteo; i++){
-    free(forcing.info[i].meteo);
+  for (int i = 0; i < forcing.nvars; i++){
+    free(forcing.info[i].vars);
     //free(forcing->precip);
     //free(forcing->pet);
   }
