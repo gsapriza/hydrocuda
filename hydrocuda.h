@@ -129,3 +129,6 @@ void allocate_forcing();
 // void read_forcing_netdf4();
 // void update_forcing();
 void free_forcing();
+
+// Auxiliar
+void getindx();
