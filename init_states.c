@@ -65,10 +65,11 @@ void init_psf(model_vars modelvars){
     strcpy(var_ids[i].ids,var_ids_aux[i].ids);
     ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_name"), "%s", modelvars.info[i].name);
     strcpy(var_ids[i].ids,var_ids_aux[i].ids);
-    ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_longname"), "%s", modelvars.info[i].longname);
-    strcpy(var_ids[i].ids,var_ids_aux[i].ids);
+    //ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_longname"), "%s", modelvars.info[i].longname);
+    //strcpy(var_ids[i].ids,var_ids_aux[i].ids);
     ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_location"), "%s", modelvars.info[i].location);
     strcpy(var_ids[i].ids,var_ids_aux[i].ids);
+    modelvars.info[i].indx = i;
   }
   
 }
