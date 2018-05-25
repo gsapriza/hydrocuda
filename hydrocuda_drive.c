@@ -17,10 +17,10 @@ model_time modeltime;
 int main (int argc, char *argv[])
 {
     // Variable declraration
-    meteo_forcing forcing; //Declare as pointer forcing
+    model_vars forcing;
     model_vars modelvars;
+    
     // Model Initialization
-
     if(argc < 2){
       printf("Usage : ./a.out <filename>");
       exit(0);
