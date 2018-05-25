@@ -15,7 +15,11 @@ extern model_domain domain;
 extern model_time modeltime;
 
 // Initialize parameter, states and flows
-void init_psf(model_vars modelvars){
-  
-  
+void getindx(model_vars mv, char *c){
+  for (int i = 0; i < mv.nvars ; i++){
+    if (c == mv.name){
+      int j = i;
+    }
+  }
+  return j;
 }
