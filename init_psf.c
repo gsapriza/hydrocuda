@@ -63,26 +63,21 @@ void init_psf(model_vars modelvars){
     // Read variables
     ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_units"), "%s", modelvars.info[i].units);
     strcpy(var_ids[i].ids,var_ids_aux[i].ids);
-    ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_name"), "%s", modelvars.info[i].name);
-    strcpy(var_ids[i].ids,var_ids_aux[i].ids);
+    //ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_name"), "%s", modelvars.info[i].name);
+    //strcpy(var_ids[i].ids,var_ids_aux[i].ids);
     //ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_longname"), "%s", modelvars.info[i].longname);
     //strcpy(var_ids[i].ids,var_ids_aux[i].ids);
     ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_location"), "%s", modelvars.info[i].location);
     strcpy(var_ids[i].ids,var_ids_aux[i].ids);
+    // Variable known declaration
+    strcpy(modelvars.info[i].name,var_ids_aux[i].ids);
     modelvars.info[i].indx = i;
+    //nulls
   }
   
 }
 
 void allocate_psf(model_vars modelvars){
-//   // Flows have different shape than parameters and states
-//   int nflows;
-//   if (options.hydroModel == "HBV"){
-//     nflows = 1;
-//   }
-//   else if (options.hydroModel == "Temez"){
-//     nflowz = 2;
-//   }
   // Allocate parametes, state and flows matrix
   for (int i = 0; i < modelvars.nvars; i++){
     modelvars.info[i].vars = (float*) malloc(sizeof(float) * domain.ntgt);
