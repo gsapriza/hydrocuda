@@ -57,6 +57,7 @@ typedef struct{
 typedef struct{
   char   units[15];     // Time series units
   char   name[20];      // Name of time series
+  int    indx;          // Variable index
   //char   longname[40];  // Long name of time series
   char   location[100]; // Location of time series data
   float *vars;          // Time series
@@ -93,6 +94,7 @@ typedef struct {
 typedef struct{
   char   units[15];    // Time series units
   char   name[20];     // Name of time series
+  int    indx;         // Variable index
   //char   longname[40]; // Long name of time series
   char   location[100]; // Location of time series data
   float *meteo;        // Time series
