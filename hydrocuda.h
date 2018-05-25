@@ -90,6 +90,7 @@ typedef struct {
 } flux_hbv;
 */
 
+/*
 // Meteorological forcing structures
 typedef struct{
   char   units[15];    // Time series units
@@ -105,8 +106,9 @@ typedef struct {
   meteo_info *info;   // Variables id to be initialized
   //float *precip; // Precipitation
   //float *pet; // Potential evapotranspiration
-} meteo_forcing;
+} meteo_forcing;*/
 
+// Auxiliar structures
 typedef struct {
   char ids[30]; //ids to get meteo info
 } aux_ids;
