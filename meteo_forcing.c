@@ -36,13 +36,14 @@ void init_forcing(meteo_forcing forcing){
     // Read variables
     ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_units"), "%s", forcing.info[i].units);
     strcpy(met_ids[i].ids,met_ids_aux[i].ids);
-    ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_name"), "%s", forcing.info[i].name);
-    strcpy(met_ids[i].ids,met_ids_aux[i].ids);
+    //ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_name"), "%s", forcing.info[i].name);
+    //strcpy(met_ids[i].ids,met_ids_aux[i].ids);
     //ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_longname"), "%s", forcing.info[i].longname);
     //strcpy(met_ids[i].ids,met_ids_aux[i].ids);
     ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_location"), "%s", forcing.info[i].location);
     strcpy(met_ids[i].ids,met_ids_aux[i].ids);
-    // Variable index
+    // Variable known declaration
+    strcpy(modelvars.info[i].name,var_ids_aux[i].ids);
     forcing.info[i].indx = i;
   }
   //forcing->info[0].units    = 'mm/day'; //Units have to be set from options
