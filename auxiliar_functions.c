@@ -14,10 +14,10 @@
 // extern model_domain domain;
 // extern model_time modeltime;
 
-// Initialize parameter, states and flows
+// Get index of different variables
 void getindx(model_vars mv, char *c){
   for (int i = 0; i < mv.nvars ; i++){
-    if (c == mv.name){
+    if (c == mv.info->name){
       break;
     }
   }
