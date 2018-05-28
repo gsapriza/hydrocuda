@@ -15,9 +15,9 @@
 // extern model_time modeltime;
 
 // Get index of different variables
-void getindx(model_vars mv, char *c){
+int getindx(model_vars mv, char *c){
   for (int i = 0; i < mv.nvars ; i++){
-    if (c == mv.info->name){
+    if (c == mv.info[i].name){
       break;
     }
   }
