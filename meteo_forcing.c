@@ -65,6 +65,17 @@ void allocate_forcing(model_vars forcing){
     //forcing->pet    = (float*)*malloc(sizeof(float)*domain.ntgt*modeltime.nt);
   }
 }
+
+void read_forcing(model_vars forcing){
+  // Read netvariables from location, setting default value if it's NULL
+  if (strcmp(forcing.info[i].location, "") == 0 ){
+    //set default value
+  }
+  else {
+    //read netcdf
+  }
+}
+
 // 
 // void read_forcing_netdf4(){
 //
