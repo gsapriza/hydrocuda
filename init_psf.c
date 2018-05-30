@@ -63,16 +63,14 @@ void init_psf(model_vars modelvars){
     // Read variables
     ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_units"), "%s", modelvars.info[i].units);
     strcpy(var_ids[i].ids,var_ids_aux[i].ids);
-    //ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_name"), "%s", modelvars.info[i].name);
-    //strcpy(var_ids[i].ids,var_ids_aux[i].ids);
-    //ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_longname"), "%s", modelvars.info[i].longname);
-    //strcpy(var_ids[i].ids,var_ids_aux[i].ids);
+    if (strcmp(modelvars.info[i].units, "") == 0 ){
+      strcpy(modelvars.info[i].units, ""); //hacer esto??
+    }
     ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_location"), "%s", modelvars.info[i].location);
     strcpy(var_ids[i].ids,var_ids_aux[i].ids);
     // Variable known declaration
     strcpy(modelvars.info[i].name,var_ids_aux[i].ids);
     modelvars.info[i].indx = i;
-    //nulls
   }
   
 }
@@ -83,6 +81,16 @@ void allocate_psf(model_vars modelvars){
     modelvars.info[i].vars = (float*) malloc(sizeof(float) * domain.ntgt);
   }
   
+}
+
+void read_psf(model_vars modelvars){
+  // Read netvariables from location, setting default value if it's NULL
+  if (strcmp(modelvars.info[i].location, "") == 0 ){
+    //set default value
+  }
+  else {
+    //read netcdf
+  }
 }
 
 void free_psf(model_vars modelvars){
