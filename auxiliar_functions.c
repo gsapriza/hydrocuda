@@ -20,6 +20,7 @@ int getindx(model_vars mv, char *c){
   int i;
   for ( i = 0; i < mv.nvars; i++){
     if (strcmp( c, mv.info[i].name) == 0){
+      i = mv.info[i].indx;
       break;
     }
   }
