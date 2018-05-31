@@ -90,6 +90,17 @@ void read_psf(model_vars modelvars){
   }
   else {
     //read netcdf
+    int nc_id
+    error = nc_open(file_name, NC_NOWRITE, &nc_id);
+    error = nc_inq(nc_id, &ndims_in, &nvars_in, &ngatts_in, &unlimdimid_in);
+    error = nc_inq_varid(nc_id, LAT_NAME, &lat_varid);
+    error = nc_inq_varid(nc_id, LON_NAME, &lon_varid);
+    error = nc_get_var_float(ncid, lat_varid, &lats_in[0]);
+    error = nc_get_var_float(ncid, lon_varid, &lons_in[0]);
+    error = nc_inq_varid(ncid, PRES_NAME, &pres_varid);
+    error = nc_inq_varid(ncid, TEMP_NAME, &temp_varid);
+    error = nc_get_var_float(ncid, pres_varid, &pres_in[0][0]);
+    error = nc_get_var_float(ncid, temp_varid, &temp_in[0][0]);
   }
 }
 
