@@ -1,5 +1,5 @@
 /**************
-* meteo_forcing
+* Model domain configurations
 *
 * Set of basic function to init, set, read of meteorological focing and update
 * using c and cuda
@@ -14,9 +14,7 @@ extern model_option options;
 extern model_domain domain;
 
 void init_domain(){
-
-  //This can be another alternative don't pass as
-
+  
   char caux[15];
   
   if (strcmp(options.domainModel,"gridcells")==0){
