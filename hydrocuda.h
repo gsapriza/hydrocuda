@@ -27,7 +27,7 @@ typedef struct{
 
 // Model time discretization
 typedef struct{
-    char freq;          // Time frequency
+    char freq[1];          // Time frequency
     int  nt;            // Total number of time steps
     int  start_second;  // second start time
     int  start_min;     // minutes start time
@@ -55,12 +55,14 @@ typedef struct{
 // Parameter definition for hbv
 // // Model class acá agregamos lo de las clasess de C++
 typedef struct{
-  char   units[15];     // Time series units
-  char   name[20];      // Name of time series
-  int    indx;          // Variable index
-  //char   longname[40];  // Long name of time series
-  char   location[100]; // Location of time series data
-  float *vars;          // Time series
+  char   units[15];      // Time series units
+  char   name[20];       // Name of time series
+  int    indx;           // Variable index
+  int    tipe;           // 1=Flux, 2=Param, 3=StateVariable, 4=forcing
+  int    timetipe;       // 1=cte only one time, 2=ntblock times, 3=all times
+  //char   longname[40]; // Long name of time series
+  char   location[100];  // Location of time series data
+  float *vars;           // Time series
 } vars_info;
 
 typedef struct {
@@ -118,10 +120,13 @@ void init_modeloptions();
 void init_domain();
 void init_times();
 
-// Parameters, states and flows
-void init_psf();
-void allocate_psf();
-void free_psf();
+// HBV Model
+void init_hbv();
+void allocate_hbv();
+void free_hbv();
+void update_param_hbv();
+void compute_hbv();
+void compute_hbv_cuda();
 
 // Meteorological forcing
 void init_forcing();
@@ -131,4 +136,4 @@ void allocate_forcing();
 void free_forcing();
 
 // Auxiliar
-void getindx();
+int getindx();

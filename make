@@ -1,5 +1,5 @@
 TARGET = hydrocuda
-LIBS = -lm
+LIBS = -lm -lnetcdf
 CC = gcc
 CFLAGS = -g -Wall
 

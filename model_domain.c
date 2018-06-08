@@ -7,16 +7,19 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "hydrocuda.h"
+
+extern model_option options;
+extern model_domain domain;
 
 void init_domain(){
 
   //This can be another alternative don't pass as
-  extern model_domain options
-  extern model_domain domain
+
   char caux[15];
   
-  if (options.domainModel == 'gridcells'){
+  if (strcmp(options.domainModel,"gridcells")==0){
     ini_sget(options.config, "ModelDomain", "nx", "%s", caux);
     domain.nx = atoi(caux);
     ini_sget(options.config, "ModelDomain", "ny", "%s", caux);

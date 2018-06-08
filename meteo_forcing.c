@@ -16,15 +16,17 @@ extern model_time modeltime;
 
 void init_forcing(model_vars forcing){
   
-  if (options.meteoModel == "Pp&Ev"){
+  aux_ids *met_ids;
+  if (strcmp(options.meteoModel, "Pp&Ev")==0){
     forcing.nvars = 2; // Precip and pet
     // For loading forcing options
-    aux_ids *met_ids = (aux_ids*) malloc(forcing.nvars * sizeof(aux_ids));
+    met_ids = (aux_ids*) malloc(forcing.nvars * sizeof(aux_ids));
     strcpy(met_ids[0].ids,"Pp"); // Precipitation
     strcpy(met_ids[1].ids,"Ev"); // Potential evotranspiration
   }
-  else if (options.meteoModel == "Pp&Penman"){
+  else if (strcmp(options.meteoModel, "Pp&Penman")==0){
     forcing.nvars = 8; // Precip and variables to Penman pet calc
+    met_ids = (aux_ids*) malloc(forcing.nvars * sizeof(aux_ids));
   }
   // Allocate auxiliar
   aux_ids *met_ids_aux = (aux_ids*) malloc(forcing.nvars * sizeof(aux_ids));
@@ -32,7 +34,7 @@ void init_forcing(model_vars forcing){
   forcing.info = (vars_info*) malloc(forcing.nvars * sizeof(vars_info));
   for (int i = 0; i < forcing.nvars; i++){
     // Fill auxiliar
-    strcpy(var_ids_aux[i].ids,met_ids[i].ids);
+    strcpy(met_ids_aux[i].ids,met_ids[i].ids);
     // Read variables
     ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_units"), "%s", forcing.info[i].units);
     strcpy(met_ids[i].ids,met_ids_aux[i].ids);
@@ -43,8 +45,9 @@ void init_forcing(model_vars forcing){
     ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_location"), "%s", forcing.info[i].location);
     strcpy(met_ids[i].ids,met_ids_aux[i].ids);
     // Variable known declaration
-    strcpy(modelvars.info[i].name,var_ids_aux[i].ids);
+    strcpy(forcing.info[i].name,met_ids_aux[i].ids);
     forcing.info[i].indx = i;
+    forcing.info[i].tipe = 4;
   }
   //forcing->info[0].units    = 'mm/day'; //Units have to be set from options
   //forcing->info[0].name     = 'precip';
@@ -66,15 +69,15 @@ void allocate_forcing(model_vars forcing){
   }
 }
 
-void read_forcing(model_vars forcing){
-  // Read netvariables from location, setting default value if it's NULL
-  if (strcmp(forcing.info[i].location, "") == 0 ){
-    //set default value
-  }
-  else {
-    //read netcdf
-  }
-}
+// void read_forcing(model_vars forcing){
+//   // Read netvariables from location, setting default value if it's NULL
+//   if (strcmp(forcing.info[i].location, "") == 0 ){
+//     //set default value
+//   }
+//   else {
+//     //read netcdf
+//   }
+// }
 
 // 
 // void read_forcing_netdf4(){

@@ -30,8 +30,10 @@ int main (int argc, char *argv[])
     init_modeloptions();
     init_domain();
     // set_options(in_file);
-    init_psf(&modelvars);
+    
     init_times();
+    
+    init_hbv(&modelvars);
     init_forcing(&forcing); //init forcing
     //Aca es donde iteramos por bloques llamando a la f
     // evaluate_model()
