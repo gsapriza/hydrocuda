@@ -59,7 +59,7 @@ typedef struct{
   char   name[20];       // Name of time series
   int    indx;           // Variable index
   int    tipe;           // 1=Flux, 2=Param, 3=StateVariable, 4=forcing
-  int    timetipe;       // 1=cte only one time, 2=ntblock times, 3=all times
+  int    timetipe;       // 1=cte or only one time, 2=ntblock times, 3=all times
   //char   longname[40]; // Long name of time series
   char   location[100];  // Location of time series data
   float *vars;           // Time series
