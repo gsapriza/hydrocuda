@@ -16,7 +16,7 @@ extern model_domain domain;
 extern model_time modeltime;
 
 
-int read_netcdf(model_vars modelvars, size_t *start, size_t *count, float *var){
+int read_netcdf(char *location, char *name, size_t *start, size_t *count, float *var){
   // Reaf NetCDF files
   int nc_id, nc_error, var_id;
   nc_error = nc_open(modelvars.info[i].location, NC_NOWRITE, &nc_id);
