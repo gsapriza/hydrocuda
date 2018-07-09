@@ -17,16 +17,17 @@ extern model_time modeltime;
 void init_forcing(model_vars forcing){
   
   aux_ids *met_ids;
-  if (strcmp(options.meteoModel, "Pp&Ev")==0){
+  if (strcmp(options.meteoModel, "Pp&Ev") == 0){
     forcing.nvars = 2; // Precip and pet
     // For loading forcing options
     met_ids = (aux_ids*) malloc(forcing.nvars * sizeof(aux_ids));
     strcpy(met_ids[0].ids,"Pp"); // Precipitation
     strcpy(met_ids[1].ids,"Ev"); // Potential evotranspiration
   }
-  else if (strcmp(options.meteoModel, "Pp&Penman")==0){
+  else if (strcmp(options.meteoModel, "Pp&Penman") == 0){
     forcing.nvars = 8; // Precip and variables to Penman pet calc
     met_ids = (aux_ids*) malloc(forcing.nvars * sizeof(aux_ids));
+    int vtipe[modelvars.nvars];
   }
   // Allocate auxiliar
   aux_ids *met_ids_aux = (aux_ids*) malloc(forcing.nvars * sizeof(aux_ids));
@@ -38,10 +39,6 @@ void init_forcing(model_vars forcing){
     // Read variables
     ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_units"), "%s", forcing.info[i].units);
     strcpy(met_ids[i].ids,met_ids_aux[i].ids);
-    //ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_name"), "%s", forcing.info[i].name);
-    //strcpy(met_ids[i].ids,met_ids_aux[i].ids);
-    //ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_longname"), "%s", forcing.info[i].longname);
-    //strcpy(met_ids[i].ids,met_ids_aux[i].ids);
     ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_location"), "%s", forcing.info[i].location);
     strcpy(met_ids[i].ids,met_ids_aux[i].ids);
     // Variable known declaration
@@ -49,12 +46,6 @@ void init_forcing(model_vars forcing){
     forcing.info[i].indx = i;
     forcing.info[i].tipe = 4;
   }
-  //forcing->info[0].units    = 'mm/day'; //Units have to be set from options
-  //forcing->info[0].name     = 'precip';
-  //forcing->info[0].longname = 'precipitation';
-  //forcing->info[1].units    = 'mm/day';
-  //forcing->info[1].name     = 'evap';
-  //forcing->info[1].longname = 'PotEvapotranspiration';
 }
 
 void allocate_forcing(model_vars forcing){
@@ -64,8 +55,6 @@ void allocate_forcing(model_vars forcing){
   
   for (int i = 0; i < forcing.nvars; i++){
     forcing.info[i].vars = (float*) malloc(sizeof(float) * domain.ntgt * modeltime.nt);
-    //forcing->precip = (float*)*malloc(sizeof(float)*domain.ntgt*modeltime.nt);
-    //forcing->pet    = (float*)*malloc(sizeof(float)*domain.ntgt*modeltime.nt);
   }
 }
 
@@ -79,11 +68,6 @@ void allocate_forcing(model_vars forcing){
 //   }
 // }
 
-// 
-// void read_forcing_netdf4(){
-//
-// }
-//
 // void update_forcing(){
 //
 // }
@@ -92,8 +76,6 @@ void free_forcing(model_vars forcing){
   
   for (int i = 0; i < forcing.nvars; i++){
     free(forcing.info[i].vars);
-    //free(forcing->precip);
-    //free(forcing->pet);
   }
 
 }
