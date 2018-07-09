@@ -5,6 +5,7 @@
 * using c and cuda
 ****************/
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -38,7 +39,7 @@ void init_hbv(model_vars modelvars){
     vtipe[3] = 2;
     strcpy(var_ids[4].ids,"perc");  // Maxumim percolation
     vtipe[4] = 2;
-    strcpy(var_ids[5].ids,"cflx");  // Maximum capillar flux
+    strcpy(var_ids[5].ids,"cflux");  // Maximum capillar flow
     vtipe[5] = 2;
     strcpy(var_ids[6].ids,"uzl");   // Upper zone limit
     vtipe[6] = 2;
@@ -105,45 +106,74 @@ void allocate_hbv(model_vars modelvars){
   
 }
 
-// void read_hbv_netcdf(model_vars modelvars){
-//   // Read netvariables from location, setting default value if it's NULL
-//   if (strcmp(modelvars.info[i].location, "") == 0 ){
-//     //set default value
-//   }
-//   else {
-//     //read netcdf
-//     int nc_id
-//     error = nc_open(file_name, NC_NOWRITE, &nc_id);
-//     error = nc_inq(nc_id, &ndims_in, &nvars_in, &ngatts_in, &unlimdimid_in);
-//     error = nc_inq_varid(nc_id, LAT_NAME, &lat_varid);
-//     error = nc_inq_varid(nc_id, LON_NAME, &lon_varid);
-//     error = nc_get_var_float(ncid, lat_varid, &lats_in[0]);
-//     error = nc_get_var_float(ncid, lon_varid, &lons_in[0]);
-//     error = nc_inq_varid(ncid, PRES_NAME, &pres_varid);
-//     error = nc_inq_varid(ncid, TEMP_NAME, &temp_varid);
-//     error = nc_get_var_float(ncid, pres_varid, &pres_in[0][0]);
-//     error = nc_get_var_float(ncid, temp_varid, &temp_in[0][0]);
-//   }
-// }
+void read_hbv_netcdf(model_vars modelvars, size_t *start, size_t *count){
+  // Read netvariables from location, setting default value if it's NULL
+  for (int i = 0; i < modelvars.nvars; i++){
+    if (strcmp(modelvars.info[i].location, "") == 0 ){
+      // Set default value
+      for (int j = 0; j < domain.ntgt; j++){
+        modelvars.info[i].vars[j] = 0;
+      }
+    }
+    else {
+      // Read netcdf
+      error = read_netcdf(modelvars.info[i].location, modelvars.info[i].name, start, count, &modelvars.info[i].vars[0]);
+    }
+  }
+}
 
 void free_hbv(model_vars modelvars){
   // Free parameters, states and flows
   for (int i = 0; i < modelvars.nvars; i++){
     free(modelvars.info[i].vars);
   }
-  
 }
 
 void update_param_hbv(model_vars modelvars){
-    
+  
 }
 
 void compute_hbv(model_vars modelvars, model_vars forcing){
-    
+  // Run HBV model in C on one time
+  int qin_i = getindx(modelvars, "qin");
+  int pp_i = getindx(forcing, "pp");
+  int qin_i = getindx(modelvars, "qin");
+  int qin_i = getindx(modelvars, "qin");
+  int qin_i = getindx(modelvars, "qin");
+  for (int i = 0; i < domain.ntgt; i++){
+    // In flows
+    qin[i]  = max(pp[i] - icf, 0.f);
+    etr[i]  = min(icf, etp[i]);
+    // State variables
+    sm[i]   = sm[i] + qin[i];
+    qdr[i]  = max(sm[i] - fc[i], 0.f);
+    sm[i]   = sm[i] - qdr[i];
+    inet[i] = qin[i] - qdr[i];
+    sp[i]   = pow(sm[i] / fc[i], beta[i]) * inet[i];
+    sm[i]   = sm[i] - sp[i];
+    // Evapotranspirations
+    etp[i]  = etp[i] - etr[i];
+    etr[i]  = min(min(sm[i] * etp[i] / (lp[i] * fc[i]), etp[i]), sm[i]);
+    sm[i]   = sm[i] - etr[i];
+    // Volume states
+    vlz[i]  = vlz[i] + min(perc[i], qdr[i] + sp[i]);
+    vuz[i]  = vuz[i] + max(0.f, qdr[i] + sp[i] - perc[i]);
+    // Capillar flow
+    qcf[i]  = cflux[i] * (fc[i] - sm[i]) / fc[i];
+    sm[i]   = sm[i] + min(vuz[i], qcf[i]);
+    vuz[i]  = max(vuz[i] - qcf[i], 0.f);
+    // Quick and inter flow
+    qq[i]   = max(kq[i] * (vuz[i] - uzl[i]), 0.f);
+    qi[i]   = ki[i] * min(uzl[i], vuz[i]);
+    // Base flow
+    qlz[i]  = klz[i] * vlz[i];
+    // Final flow
+    q[i] = qlz[i] + qi[i] + qq[i];
+  }
 }
 
 void compute_hbv_cuda(model_vars modelvars, model_vars forcing){
-    
+  
 }
 
 
