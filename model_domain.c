@@ -14,10 +14,10 @@ extern model_option options;
 extern model_domain domain;
 
 void init_domain(){
-  
+  // Initialize domain dimensions
   char caux[15];
   
-  if (strcmp(options.domainModel,"gridcells")==0){
+  if (strcmp(options.domainModel,"gridcells") == 0){
     ini_sget(options.config, "ModelDomain", "nx", "%s", caux);
     domain.nx = atoi(caux);
     ini_sget(options.config, "ModelDomain", "ny", "%s", caux);
@@ -26,10 +26,6 @@ void init_domain(){
     domain.dx = atof(caux);
     ini_sget(options.config, "ModelDomain", "dy", "%s", caux);
     domain.dy = atof(caux);
-    //domain.nx   = 2; //estas opciones estarian dentro de options??
-    //domain.ny   = 2;
     domain.ntgt = domain.nx*domain.ny;
-    //domain.dx   = 1000.0;
-    //domain.dy   = 1000.0;
   }
 }
