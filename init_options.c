@@ -9,12 +9,8 @@
 #include "hydrocuda.h"
 
 void init_modeloptions(){
-  
+  // Initialize model basic options
   extern model_option options; //call options decleared in main
-  // optns.model =  'HBV';
-  // optns.domainModel =  'gridcells';
-  // optns.meteoModel  = 'Pp&Ev';
-  // optns.istimeblock = 1;
   ini_sget(options.config, "HydroModel", "hydro_model", "%s", options.hydroModel);
   ini_sget(options.config, "ModelDomain", "support_type", "%s", options.domainModel);
   ini_sget(options.config, "MeteoModel", "forcing_type", "%s",  options.meteoModel);
