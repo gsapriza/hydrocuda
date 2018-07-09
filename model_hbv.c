@@ -103,7 +103,6 @@ void allocate_hbv(model_vars modelvars){
   for (int i = 0; i < modelvars.nvars; i++){
     modelvars.info[i].vars = (float*) malloc(sizeof(float) * domain.ntgt);
   }
-  
 }
 
 void read_hbv_netcdf(model_vars modelvars, size_t *start, size_t *count){
@@ -135,11 +134,23 @@ void update_param_hbv(model_vars modelvars){
 
 void compute_hbv(model_vars modelvars, model_vars forcing){
   // Run HBV model in C on one time
-  int qin_i = getindx(modelvars, "qin");
-  int pp_i = getindx(forcing, "pp");
-  int qin_i = getindx(modelvars, "qin");
-  int qin_i = getindx(modelvars, "qin");
-  int qin_i = getindx(modelvars, "qin");
+  int pp_i    = getindx(forcing, "pp");
+  int etp_i   = getindx(forcing, "etp");
+  int qin_i   = getindx(modelvars, "qin");
+  int icf_i   = getindx(modelvars, "icf");
+  int sm_i    = getindx(modelvars, "sm");
+  int qdr_i   = getindx(modelvars, "qdr");
+  int fc_i    = getindx(modelvars, "fc");
+  int inet_i  = getindx(modelvars, "inet");
+  int sp_i    = getindx(modelvars, "sp"); //.....
+  int qin_i   = getindx(modelvars, "qin");
+  int qin_i   = getindx(modelvars, "qin");
+  int qin_i   = getindx(modelvars, "qin");
+  int qin_i   = getindx(modelvars, "qin");
+  int qin_i   = getindx(modelvars, "qin");
+  int qin_i   = getindx(modelvars, "qin");
+  int qin_i   = getindx(modelvars, "qin");
+  int qin_i   = getindx(modelvars, "qin");
   for (int i = 0; i < domain.ntgt; i++){
     // In flows
     qin[i]  = max(pp[i] - icf, 0.f);
