@@ -27,7 +27,7 @@ typedef struct{
 
 // Model time discretization
 typedef struct{
-    char freq[1];          // Time frequency
+    char freq[1];       // Time frequency
     int  nt;            // Total number of time steps
     int  start_second;  // second start time
     int  start_min;     // minutes start time
@@ -59,7 +59,7 @@ typedef struct{
   int    indx;           // Variable index
   int    tipe;           // 1=Flux, 2=Param, 3=StateVariable, 4=forcing
   int    timetipe;       // 1=cte or only one time, 2=ntblock times, 3=all times
-  char   location[100];  // Location of time series data
+  char   location[150];  // Location of time series data
   float *vars;           // Time series
 } vars_info;
 
