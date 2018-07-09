@@ -58,15 +58,21 @@ void allocate_forcing(model_vars forcing){
   }
 }
 
-// void read_forcing(model_vars forcing){
-//   // Read netvariables from location, setting default value if it's NULL
-//   if (strcmp(forcing.info[i].location, "") == 0 ){
-//     //set default value
-//   }
-//   else {
-//     //read netcdf
-//   }
-// }
+void read_forcing_netcdf(model_vars forcing, size_t *start, size_t *count){
+  // Read netvariables from location, setting default value if it's NULL
+  for (int i = 0; i < modelvars.nvars; i++){
+    if (strcmp(forcing.info[i].location, "") == 0 ){
+      // Set default value
+      for (int j = 0; j < domain.ntgt; j++){
+        modelvars.info[i].vars[j] = 0;
+      }
+    }
+    else {
+      // Read netcdf
+      error = read_netcdf(forcing.info[i].location, forcing.info[i].name, start, count, &forcing.info[i].vars[0]);
+    }
+  }
+}
 
 // void update_forcing(){
 //
