@@ -53,14 +53,12 @@ typedef struct{
 } model_topology;
 
 // Parameter definition for hbv
-// // Model class acá agregamos lo de las clasess de C++
 typedef struct{
   char   units[15];      // Time series units
   char   name[20];       // Name of time series
   int    indx;           // Variable index
   int    tipe;           // 1=Flux, 2=Param, 3=StateVariable, 4=forcing
   int    timetipe;       // 1=cte or only one time, 2=ntblock times, 3=all times
-  //char   longname[40]; // Long name of time series
   char   location[100];  // Location of time series data
   float *vars;           // Time series
 } vars_info;
@@ -73,49 +71,13 @@ typedef struct {
   vars_info *info;  // Variables id to be initialized
 } model_vars;
 
-/*
-typedef struct {
-    float *field_capacity;
-    float *kquick;
-} param_hbv;
-
-typedef struct {
-  float *soilmoist;
-  float *gw1;
-  float *gw2;
-} state_hbv;
-
-typedef struct {
-  float *qsurf; // Surface runoff generation
-  float *qintf; // Inferflow runoff generation
-  float *qbase; //
-} flux_hbv;
-*/
-
-/*
-// Meteorological forcing structures
-typedef struct{
-  char   units[15];    // Time series units
-  char   name[20];     // Name of time series
-  int    indx;         // Variable index
-  //char   longname[40]; // Long name of time series
-  char   location[100]; // Location of time series data
-  float *meteo;        // Time series
-} meteo_info;
-
-typedef struct {
-  int         nmeteo; // Number of meteorological variables to be used
-  meteo_info *info;   // Variables id to be initialized
-  //float *precip; // Precipitation
-  //float *pet; // Potential evapotranspiration
-} meteo_forcing;*/
-
 // Auxiliar structures
 typedef struct {
   char ids[30]; //ids to get meteo info
 } aux_ids;
 
 // Function declaration
+// Init
 void init_modeloptions();
 void init_domain();
 void init_times();
