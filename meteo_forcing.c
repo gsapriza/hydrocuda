@@ -27,7 +27,7 @@ void init_forcing(model_vars forcing){
   else if (strcmp(options.meteoModel, "Pp&Penman") == 0){
     forcing.nvars = 8; // Precip and variables to Penman pet calc
     met_ids = (aux_ids*) malloc(forcing.nvars * sizeof(aux_ids));
-    int vtipe[modelvars.nvars];
+    int vtipe[forcing.nvars];
   }
   // Allocate auxiliar
   aux_ids *met_ids_aux = (aux_ids*) malloc(forcing.nvars * sizeof(aux_ids));
@@ -60,11 +60,12 @@ void allocate_forcing(model_vars forcing){
 
 void read_forcing_netcdf(model_vars forcing, size_t *start, size_t *count){
   // Read netvariables from location, setting default value if it's NULL
-  for (int i = 0; i < modelvars.nvars; i++){
+  int error;
+  for (int i = 0; i < forcing.nvars; i++){
     if (strcmp(forcing.info[i].location, "") == 0 ){
       // Set default value
       for (int j = 0; j < domain.ntgt; j++){
-        modelvars.info[i].vars[j] = 0;
+        forcing.info[i].vars[j] = 0;
       }
     }
     else {
