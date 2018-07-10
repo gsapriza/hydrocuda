@@ -17,7 +17,6 @@ extern model_time modeltime;
 
 void init_hbv(model_vars modelvars){
   // Initialize parameter, states and flows
-//   char caux[15]; // Auxiliar to read integer
 //   modelvars.nparams = 10;
 //   modelvars.nstates = 3;
 //   modelvars.nflows = 9;
@@ -74,6 +73,8 @@ void init_hbv(model_vars modelvars){
   strcpy(var_ids[21].ids,"qlz");  // Base flow
   vtipe[21] = 1;
   
+  // Auxiliar to read integer
+  char caux[15];
   // Auxiliar
   aux_ids *var_ids_aux = (aux_ids*) malloc(modelvars.nvars * sizeof(aux_ids));
   // Allocate vars_info
@@ -93,6 +94,9 @@ void init_hbv(model_vars modelvars){
     strcpy(modelvars.info[i].name,var_ids_aux[i].ids);
     modelvars.info[i].indx = i;
     modelvars.info[i].tipe = vtipe[i];
+    ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_timetipe"), "%s", caux);
+    strcpy(var_ids[i].ids,var_ids_aux[i].ids);
+    modelvars.info[i].timetipe = atoi(caux);
   }
 }
 
