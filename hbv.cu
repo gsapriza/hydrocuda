@@ -33,10 +33,11 @@ __global__ void hbv_dynamic( float *q    ,
                              float *ki   ,
                              float *kq   )
 {
-  const int i = blockDim.x*blockDim.y*blockIdx.y*gridDim.x + blockDim.x*blockDim.y*blockIdx.x + blockDim.x*threadIdx.y + threadIdx.x;
+  const int i = blockDim.x*blockDim.y*blockIdx.y*gridDim.x + 
+                blockDim.x*blockDim.y*blockIdx.x + blockDim.x*threadIdx.y + threadIdx.x;
   // In flows
-  qin[i]  = max(pp[i] - icf, 0.f);
-  etr[i]  = min(icf, etp[i]);
+  qin[i]  = max(pp[i] - icf[i], 0.f);
+  etr[i]  = min(icf[i], etp[i]);
   // State variables
   sm[i]   = sm[i] + qin[i];
   qdr[i]  = max(sm[i] - fc[i], 0.f);
