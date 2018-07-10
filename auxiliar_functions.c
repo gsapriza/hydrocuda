@@ -38,3 +38,22 @@ int read_netcdf(char *location, char *name, size_t *start, size_t *count, float 
   return nc_error;
 }
 
+float max(float a, float b){
+  if (a > b){
+    return a
+  }
+  else {
+    return b
+  }
+}
+
+float min(float a, float b){
+  if (a > b){
+    return b
+  }
+  else {
+    return a
+  }
+}
+
+
