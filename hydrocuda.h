@@ -100,3 +100,5 @@ void free_forcing();
 // Auxiliar
 int getindx();
 int read_netcdf();
+float max();
+float min();
