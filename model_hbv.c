@@ -109,6 +109,7 @@ void allocate_hbv(model_vars modelvars){
 
 void read_hbv_netcdf(model_vars modelvars, size_t *start, size_t *count){
   // Read netvariables from location, setting default value if it's NULL
+  int error;
   for (int i = 0; i < modelvars.nvars; i++){
     if (strcmp(modelvars.info[i].location, "") == 0 ){
       // Set default value
@@ -163,7 +164,7 @@ void compute_hbv(model_vars modelvars, model_vars forcing){
   int q_i     = getindx(modelvars, "q");
   for (int i = 0; i < domain.ntgt; i++){
     // In flows
-    modelvars.info[qin_i].vars[i]  = max(forcing.info[pp_i].vars[i] - modelvars.info[icf].vars[i], 0.f);
+    modelvars.info[qin_i].vars[i]  = max(forcing.info[pp_i].vars[i] - modelvars.info[icf_i].vars[i], 0.f);
     modelvars.info[etr_i].vars[i]  = min(modelvars.info[icf_i].vars[i], forcing.info[etp_i].vars[i]);
     // State variables
     modelvars.info[sm_i].vars[i]   = modelvars.info[sm_i].vars[i] + modelvars.info[qin_i].vars[i];
