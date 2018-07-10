@@ -40,19 +40,19 @@ int read_netcdf(char *location, char *name, size_t *start, size_t *count, float 
 
 float max(float a, float b){
   if (a > b){
-    return a
+    return a;
   }
   else {
-    return b
+    return b;
   }
 }
 
 float min(float a, float b){
   if (a > b){
-    return b
+    return b;
   }
   else {
-    return a
+    return a;
   }
 }
 
