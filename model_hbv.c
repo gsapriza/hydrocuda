@@ -15,67 +15,65 @@ extern model_option options;
 extern model_domain domain;
 extern model_time modeltime;
 
-// Initialize parameter, states and flows
 void init_hbv(model_vars modelvars){
-  
+  // Initialize parameter, states and flows
 //   char caux[15]; // Auxiliar to read integer
-
-//     modelvars.nparams = 10;
-//     modelvars.nstates = 3;
-//     modelvars.nflows = 9;
-    modelvars.nvars = 22; // HBV: 10 params + 3 states + 9 flow
-    // For loading variables options
-    aux_ids *var_ids = (aux_ids*) malloc(modelvars.nvars * sizeof(aux_ids));
-    int vtipe[modelvars.nvars];
-    //tipe variable: 1=Flux, 2=Param, 3=StateVariable
-    // Parameters
-    strcpy(var_ids[0].ids,"icf");   // Infiltration
-    vtipe[0] = 2;
-    strcpy(var_ids[1].ids,"fc");    // Feild capacity
-    vtipe[1] = 2;
-    strcpy(var_ids[2].ids,"beta");  // Seepage
-    vtipe[2] = 2;
-    strcpy(var_ids[3].ids,"lp");    // Real Evapotranspiration factor
-    vtipe[3] = 2;
-    strcpy(var_ids[4].ids,"perc");  // Maxumim percolation
-    vtipe[4] = 2;
-    strcpy(var_ids[5].ids,"cflux");  // Maximum capillar flow
-    vtipe[5] = 2;
-    strcpy(var_ids[6].ids,"uzl");   // Upper zone limit
-    vtipe[6] = 2;
-    strcpy(var_ids[7].ids,"kq");    // Quickflow constant
-    vtipe[7] = 2;
-    strcpy(var_ids[8].ids,"ki");    // Interflow constant
-    vtipe[8] = 2;
-    strcpy(var_ids[9].ids,"klz");   // Lower zone constant
-    vtipe[9] = 2;
-    // State variables
-    strcpy(var_ids[10].ids,"sm");   // Soil moisture
-    vtipe[10] = 3;
-    strcpy(var_ids[11].ids,"vlz");  // Lower zone volume
-    vtipe[11] = 3;
-    strcpy(var_ids[12].ids,"vuz");  // Upper zone volume
-    vtipe[12] = 3;
-    // Internal flows
-    strcpy(var_ids[13].ids,"qin");  // In flow
-    vtipe[13] = 1;
-    strcpy(var_ids[14].ids,"etr");  // Real Evapotranspiration
-    vtipe[14] = 1;
-    strcpy(var_ids[15].ids,"qdr");  // Drainage flow
-    vtipe[15] = 1;
-    strcpy(var_ids[16].ids,"inet"); // Net in flow
-    vtipe[16] = 1;
-    strcpy(var_ids[17].ids,"sp");   // Seepage flow
-    vtipe[17] = 1;
-    strcpy(var_ids[18].ids,"qcf");  // Captllar flow
-    vtipe[18] = 1;
-    strcpy(var_ids[19].ids,"qq");   // Quick flow
-    vtipe[19] = 1;
-    strcpy(var_ids[20].ids,"qi");   // Inter flow
-    vtipe[20] = 1;
-    strcpy(var_ids[21].ids,"qlz");  // Base flow
-    vtipe[21] = 1;
-
+//   modelvars.nparams = 10;
+//   modelvars.nstates = 3;
+//   modelvars.nflows = 9;
+  modelvars.nvars = 22; // HBV: 10 params + 3 states + 9 flow
+  // For loading variables options
+  aux_ids *var_ids = (aux_ids*) malloc(modelvars.nvars * sizeof(aux_ids));
+  int vtipe[modelvars.nvars];
+  //tipe variable: 1=Flux, 2=Param, 3=StateVariable
+  // Parameters
+  strcpy(var_ids[0].ids,"icf");   // Infiltration
+  vtipe[0] = 2;
+  strcpy(var_ids[1].ids,"fc");    // Feild capacity
+  vtipe[1] = 2;
+  strcpy(var_ids[2].ids,"beta");  // Seepage
+  vtipe[2] = 2;
+  strcpy(var_ids[3].ids,"lp");    // Real Evapotranspiration factor
+  vtipe[3] = 2;
+  strcpy(var_ids[4].ids,"perc");  // Maxumim percolation
+  vtipe[4] = 2;
+  strcpy(var_ids[5].ids,"cflux");  // Maximum capillar flow
+  vtipe[5] = 2;
+  strcpy(var_ids[6].ids,"uzl");   // Upper zone limit
+  vtipe[6] = 2;
+  strcpy(var_ids[7].ids,"kq");    // Quickflow constant
+  vtipe[7] = 2;
+  strcpy(var_ids[8].ids,"ki");    // Interflow constant
+  vtipe[8] = 2;
+  strcpy(var_ids[9].ids,"klz");   // Lower zone constant
+  vtipe[9] = 2;
+  // State variables
+  strcpy(var_ids[10].ids,"sm");   // Soil moisture
+  vtipe[10] = 3;
+  strcpy(var_ids[11].ids,"vlz");  // Lower zone volume
+  vtipe[11] = 3;
+  strcpy(var_ids[12].ids,"vuz");  // Upper zone volume
+  vtipe[12] = 3;
+  // Internal flows
+  strcpy(var_ids[13].ids,"qin");  // In flow
+  vtipe[13] = 1;
+  strcpy(var_ids[14].ids,"etr");  // Real Evapotranspiration
+  vtipe[14] = 1;
+  strcpy(var_ids[15].ids,"qdr");  // Drainage flow
+  vtipe[15] = 1;
+  strcpy(var_ids[16].ids,"inet"); // Net in flow
+  vtipe[16] = 1;
+  strcpy(var_ids[17].ids,"sp");   // Seepage flow
+  vtipe[17] = 1;
+  strcpy(var_ids[18].ids,"qcf");  // Captllar flow
+  vtipe[18] = 1;
+  strcpy(var_ids[19].ids,"qq");   // Quick flow
+  vtipe[19] = 1;
+  strcpy(var_ids[20].ids,"qi");   // Inter flow
+  vtipe[20] = 1;
+  strcpy(var_ids[21].ids,"qlz");  // Base flow
+  vtipe[21] = 1;
+  
   // Auxiliar
   aux_ids *var_ids_aux = (aux_ids*) malloc(modelvars.nvars * sizeof(aux_ids));
   // Allocate vars_info
@@ -142,15 +140,23 @@ void compute_hbv(model_vars modelvars, model_vars forcing){
   int qdr_i   = getindx(modelvars, "qdr");
   int fc_i    = getindx(modelvars, "fc");
   int inet_i  = getindx(modelvars, "inet");
-  int sp_i    = getindx(modelvars, "sp"); //.....
-  int qin_i   = getindx(modelvars, "qin");
-  int qin_i   = getindx(modelvars, "qin");
-  int qin_i   = getindx(modelvars, "qin");
-  int qin_i   = getindx(modelvars, "qin");
-  int qin_i   = getindx(modelvars, "qin");
-  int qin_i   = getindx(modelvars, "qin");
-  int qin_i   = getindx(modelvars, "qin");
-  int qin_i   = getindx(modelvars, "qin");
+  int sp_i    = getindx(modelvars, "sp");
+  int beta_i  = getindx(modelvars, "beta");
+  int etr_i   = getindx(modelvars, "etr");
+  int lp_i    = getindx(modelvars, "lp");
+  int vlz_i   = getindx(modelvars, "vlz");
+  int perc_i  = getindx(modelvars, "perc");
+  int vuz_i   = getindx(modelvars, "vuz");
+  int qcf_i   = getindx(modelvars, "qcf");
+  int cflux_i = getindx(modelvars, "cflux");
+  int qq_i    = getindx(modelvars, "qq");
+  int kq_i    = getindx(modelvars, "kq");
+  int uzl_i   = getindx(modelvars, "uzl");
+  int qi_i    = getindx(modelvars, "qi");
+  int ki_i    = getindx(modelvars, "ki");
+  int qlz_i   = getindx(modelvars, "qlz");
+  int klz_i   = getindx(modelvars, "klz");
+  int q_i     = getindx(modelvars, "q");
   for (int i = 0; i < domain.ntgt; i++){
     // In flows
     qin[i]  = max(pp[i] - icf, 0.f);
