@@ -27,7 +27,6 @@ void init_forcing(model_vars forcing){
   else if (strcmp(options.meteoModel, "Pp&Penman") == 0){
     forcing.nvars = 8; // Precip and variables to Penman pet calc
     met_ids = (aux_ids*) malloc(forcing.nvars * sizeof(aux_ids));
-    int vtipe[forcing.nvars];
   }
   // Allocate auxiliar
   aux_ids *met_ids_aux = (aux_ids*) malloc(forcing.nvars * sizeof(aux_ids));
@@ -71,6 +70,9 @@ void read_forcing_netcdf(model_vars forcing, size_t *start, size_t *count){
     else {
       // Read netcdf
       error = read_netcdf(forcing.info[i].location, forcing.info[i].name, start, count, &forcing.info[i].vars[0]);
+      if (error > 0){
+        printf("Error reading %s file \n", forcing.info[i].location);
+      }
     }
   }
 }
