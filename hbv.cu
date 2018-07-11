@@ -66,3 +66,24 @@ __global__ void hbv_dynamic( float *q    ,
   
 }
 
+
+__device__ float min(float *a, int b){
+  float val = a[0];
+  for (int i = 1; i<b; i++){
+	  if (val>a[i]){
+	    val = a[i];
+	  }
+  }
+  return val;
+}
+
+
+__device__ float max(float *a, int b){
+  float val = a[0];
+  for (int i = 1; i<b; i++){
+	  if (val<a[i]){
+	    val = a[i];
+	  }
+  }
+  return val;
+}
