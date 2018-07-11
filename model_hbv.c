@@ -120,12 +120,16 @@ void read_hbv_netcdf(model_vars modelvars, size_t *start, size_t *count){
     else {
       // Read netcdf
       error = read_netcdf(modelvars.info[i].location, modelvars.info[i].name, start, count, &modelvars.info[i].vars[0]);
+      if (error > 0){
+        printf("Error reading %s file \n", modelvars.info[i].location);
+        exit(1);
+      }
     }
   }
 }
 
 void free_hbv(model_vars modelvars){
-  // Free parameters, states and flows
+  // Free HBV parameters, states and flows
   for (int i = 0; i < modelvars.nvars; i++){
     free(modelvars.info[i].vars);
   }
@@ -174,7 +178,7 @@ void compute_hbv(model_vars modelvars, model_vars forcing){
     modelvars.info[sp_i].vars[i]   = pow(modelvars.info[sm_i].vars[i] / modelvars.info[fc_i].vars[i], modelvars.info[beta_i].vars[i]) * modelvars.info[inet_i].vars[i];
     modelvars.info[sm_i].vars[i]   = modelvars.info[sm_i].vars[i] - modelvars.info[sp_i].vars[i];
     // Evapotranspirations
-    forcing.info[etp_i].vars[i]  = forcing.info[etp_i].vars[i] - modelvars.info[etr_i].vars[i];
+    forcing.info[etp_i].vars[i]    = forcing.info[etp_i].vars[i] - modelvars.info[etr_i].vars[i];
     modelvars.info[etr_i].vars[i]  = min(min(modelvars.info[sm_i].vars[i] * forcing.info[etp_i].vars[i] / (modelvars.info[lp_i].vars[i] * modelvars.info[fc_i].vars[i]), forcing.info[etp_i].vars[i]), modelvars.info[sm_i].vars[i]);
     modelvars.info[sm_i].vars[i]   = modelvars.info[sm_i].vars[i] - modelvars.info[etr_i].vars[i];
     // Volume states
@@ -195,7 +199,7 @@ void compute_hbv(model_vars modelvars, model_vars forcing){
 }
 
 void compute_hbv_cuda(model_vars modelvars, model_vars forcing){
-  
+  // Run HBV model in CUDA on one time
 }
 
 
