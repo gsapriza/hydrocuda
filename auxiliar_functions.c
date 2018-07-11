@@ -40,6 +40,7 @@ int read_netcdf(char *location, char *name, size_t *start, size_t *count, float 
 
 
 float min(float *a, int b){
+  // Gets the minimum of a vector
   float val = a[0];
   for (int i = 1; i<b; i++){
 	  if (val>a[i]){
@@ -51,6 +52,7 @@ float min(float *a, int b){
 
 
 float max(float *a, int b){
+  // Gets the maximum of a vector
   float val = a[0];
   for (int i = 1; i<b; i++){
 	  if (val<a[i]){
