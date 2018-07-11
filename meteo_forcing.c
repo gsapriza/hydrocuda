@@ -72,6 +72,7 @@ void read_forcing_netcdf(model_vars forcing, size_t *start, size_t *count){
       error = read_netcdf(forcing.info[i].location, forcing.info[i].name, start, count, &forcing.info[i].vars[0]);
       if (error > 0){
         printf("Error reading %s file \n", forcing.info[i].location);
+        exit(1);
       }
     }
   }
