@@ -38,22 +38,25 @@ int read_netcdf(char *location, char *name, size_t *start, size_t *count, float 
   return nc_error;
 }
 
-float max(float a, float b){
-  if (a > b){
-    return a;
+
+float min(float *a, int b){
+  float val = a[0];
+  for (int i = 1; i<b; i++){
+	  if (val>a[i]){
+	    val = a[i];
+	  }
   }
-  else {
-    return b;
-  }
+  return val;
 }
 
-float min(float a, float b){
-  if (a > b){
-    return b;
-  }
-  else {
-    return a;
-  }
-}
 
+float max(float *a, int b){
+  float val = a[0];
+  for (int i = 1; i<b; i++){
+	  if (val<a[i]){
+	    val = a[i];
+	  }
+  }
+  return val;
+}
 
