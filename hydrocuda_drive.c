@@ -19,7 +19,7 @@ int main (int argc, char *argv[])
     // Variable declraration
     model_vars forcing;
     model_vars modelvars;
-    
+
     // Model Initialization
     if(argc < 2){
       printf("Usage : ./a.out <filename>");
@@ -29,10 +29,9 @@ int main (int argc, char *argv[])
 
     init_modeloptions();
     init_domain();
-    // set_options(in_file);
-    
     init_times();
-    
+
+    //
     init_hbv(&modelvars);
     init_forcing(&forcing); //init forcing
     //Aca es donde iteramos por bloques llamando a la f
