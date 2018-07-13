@@ -141,6 +141,7 @@ void update_param_hbv(model_vars modelvars){
 
 void compute_hbv(model_vars modelvars, model_vars forcing){
   // Run HBV model in C on one time
+  float faux[2];
   int pp_i    = getindx(forcing, "pp");
   int etp_i   = getindx(forcing, "etp");
   int qin_i   = getindx(modelvars, "qin");
@@ -168,29 +169,51 @@ void compute_hbv(model_vars modelvars, model_vars forcing){
   int q_i     = getindx(modelvars, "q");
   for (int i = 0; i < domain.ntgt; i++){
     // In flows
-    modelvars.info[qin_i].vars[i]  = max(forcing.info[pp_i].vars[i] - modelvars.info[icf_i].vars[i], 0.f);
-    modelvars.info[etr_i].vars[i]  = min(modelvars.info[icf_i].vars[i], forcing.info[etp_i].vars[i]);
+    faux[0] = forcing.info[pp_i].vars[i] - modelvars.info[icf_i].vars[i];
+    faux[1] = 0.f;
+    modelvars.info[qin_i].vars[i]  = max(faux, 2);
+    faux[0] = modelvars.info[icf_i].vars[i];
+    faux[1] = forcing.info[etp_i].vars[i];
+    modelvars.info[etr_i].vars[i]  = min(faux, 2);
     // State variables
     modelvars.info[sm_i].vars[i]   = modelvars.info[sm_i].vars[i] + modelvars.info[qin_i].vars[i];
-    modelvars.info[qdr_i].vars[i]  = max(modelvars.info[sm_i].vars[i] - modelvars.info[fc_i].vars[i], 0.f);
+    faux[0] = modelvars.info[sm_i].vars[i] - modelvars.info[fc_i].vars[i];
+    faux[1] = 0.f;
+    modelvars.info[qdr_i].vars[i]  = max(faux, 2);
     modelvars.info[sm_i].vars[i]   = modelvars.info[sm_i].vars[i] - modelvars.info[qdr_i].vars[i];
     modelvars.info[inet_i].vars[i] = modelvars.info[qin_i].vars[i] - modelvars.info[qdr_i].vars[i];
     modelvars.info[sp_i].vars[i]   = pow(modelvars.info[sm_i].vars[i] / modelvars.info[fc_i].vars[i], modelvars.info[beta_i].vars[i]) * modelvars.info[inet_i].vars[i];
     modelvars.info[sm_i].vars[i]   = modelvars.info[sm_i].vars[i] - modelvars.info[sp_i].vars[i];
     // Evapotranspirations
     forcing.info[etp_i].vars[i]    = forcing.info[etp_i].vars[i] - modelvars.info[etr_i].vars[i];
-    modelvars.info[etr_i].vars[i]  = min(min(modelvars.info[sm_i].vars[i] * forcing.info[etp_i].vars[i] / (modelvars.info[lp_i].vars[i] * modelvars.info[fc_i].vars[i]), forcing.info[etp_i].vars[i]), modelvars.info[sm_i].vars[i]);
+    faux[0] = modelvars.info[sm_i].vars[i] * forcing.info[etp_i].vars[i] / (modelvars.info[lp_i].vars[i] * modelvars.info[fc_i].vars[i]);
+    faux[1] = forcing.info[etp_i].vars[i];
+    faux[0] = min(faux, 2);
+    faux[1] = modelvars.info[sm_i].vars[i];
+    modelvars.info[etr_i].vars[i]  = min(faux, 2);
     modelvars.info[sm_i].vars[i]   = modelvars.info[sm_i].vars[i] - modelvars.info[etr_i].vars[i];
     // Volume states
-    modelvars.info[vlz_i].vars[i]  = modelvars.info[vlz_i].vars[i] + min(modelvars.info[perc_i].vars[i], modelvars.info[qdr_i].vars[i] + modelvars.info[sp_i].vars[i]);
-    modelvars.info[vuz_i].vars[i]  = modelvars.info[vuz_i].vars[i] + max(0.f, modelvars.info[qdr_i].vars[i] + modelvars.info[sp_i].vars[i] - modelvars.info[perc_i].vars[i]);
+    faux[0] = modelvars.info[perc_i].vars[i];
+    faux[1] = modelvars.info[qdr_i].vars[i] + modelvars.info[sp_i].vars[i];
+    modelvars.info[vlz_i].vars[i]  = modelvars.info[vlz_i].vars[i] + min(faux, 2);
+    faux[0] = 0.f;
+    faux[1] = modelvars.info[qdr_i].vars[i] + modelvars.info[sp_i].vars[i] - modelvars.info[perc_i].vars[i];
+    modelvars.info[vuz_i].vars[i]  = modelvars.info[vuz_i].vars[i] + max(faux, 2);
     // Capillar flow
     modelvars.info[qcf_i].vars[i]  = modelvars.info[cflux_i].vars[i] * (modelvars.info[fc_i].vars[i] - modelvars.info[sm_i].vars[i]) / modelvars.info[fc_i].vars[i];
-    modelvars.info[sm_i].vars[i]   = modelvars.info[sm_i].vars[i] + min(modelvars.info[vuz_i].vars[i], modelvars.info[qcf_i].vars[i]);
-    modelvars.info[vuz_i].vars[i]  = max(modelvars.info[vuz_i].vars[i] - modelvars.info[qcf_i].vars[i], 0.f);
+    faux[0] = modelvars.info[vuz_i].vars[i];
+    faux[1] = modelvars.info[qcf_i].vars[i];
+    modelvars.info[sm_i].vars[i]   = modelvars.info[sm_i].vars[i] + min(faux, 2);
+    faux[0] = modelvars.info[vuz_i].vars[i] - modelvars.info[qcf_i].vars[i];
+    faux[1] = 0.f;
+    modelvars.info[vuz_i].vars[i]  = max(faux, 2);
     // Quick and inter flow
-    modelvars.info[qq_i].vars[i]   = max(modelvars.info[kq_i].vars[i] * (modelvars.info[vuz_i].vars[i] - modelvars.info[uzl_i].vars[i]), 0.f);
-    modelvars.info[qi_i].vars[i]   = modelvars.info[ki_i].vars[i] * min(modelvars.info[uzl_i].vars[i], modelvars.info[vuz_i].vars[i]);
+    faux[0] = modelvars.info[kq_i].vars[i] * (modelvars.info[vuz_i].vars[i] - modelvars.info[uzl_i].vars[i]);
+    faux[1] = 2;
+    modelvars.info[qq_i].vars[i]   = max(faux, 2);
+    faux[0] = modelvars.info[uzl_i].vars[i];
+    faux[1] = modelvars.info[vuz_i].vars[i];
+    modelvars.info[qi_i].vars[i]   = modelvars.info[ki_i].vars[i] * min(faux, 2);
     // Base flow
     modelvars.info[qlz_i].vars[i]  = modelvars.info[klz_i].vars[i] * modelvars.info[vlz_i].vars[i];
     // Final flow
