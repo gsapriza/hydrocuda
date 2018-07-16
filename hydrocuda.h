@@ -86,7 +86,7 @@ void init_times();
 void init_hbv();
 void allocate_hbv();
 void free_hbv();
-void read_hbv_netdf();
+void read_hbv_netcdf();
 void update_param_hbv();
 void compute_hbv();
 void compute_hbv_cuda();
@@ -94,7 +94,7 @@ void compute_hbv_cuda();
 // Meteorological forcing
 void init_forcing();
 void allocate_forcing();
-void read_forcing_netdf();
+void read_forcing_netcdf();
 // void update_forcing();
 void free_forcing();
 
