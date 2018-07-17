@@ -136,7 +136,7 @@ void free_hbv(model_vars modelvars){
 }
 
 void update_param_hbv(model_vars modelvars){
-  
+  // Update HBV parameters
 }
 
 void compute_hbv(model_vars modelvars, model_vars forcing){
