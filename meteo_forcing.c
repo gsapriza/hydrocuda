@@ -78,12 +78,17 @@ void read_forcing_netcdf(model_vars forcing, size_t *start, size_t *count){
   }
 }
 
-// void update_forcing(){
-//
-// }
+void update_forcing(model_vars forcing, int i){
+  // Puts values into forcing matrixs
+  size_t start[] = {i, 0, 0};
+  size_t count[] = {1, domain.nx, domain.ny};
+  for (int i = 0; i < forcing.nvars; i++){
+    read_forcing_netcdf(&forcing, start, count);
+  }
+}
 
 void free_forcing(model_vars forcing){
-  
+  // Free forcing matrixs
   for (int i = 0; i < forcing.nvars; i++){
     free(forcing.info[i].vars);
   }
