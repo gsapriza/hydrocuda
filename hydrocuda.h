@@ -95,7 +95,7 @@ void compute_hbv_cuda();
 void init_forcing();
 void allocate_forcing();
 void read_forcing_netcdf();
-// void update_forcing();
+void update_forcing();
 void free_forcing();
 
 // Auxiliar
