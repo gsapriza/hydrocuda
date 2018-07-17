@@ -53,12 +53,12 @@ void allocate_forcing(model_vars forcing){
   // All time steps or in each time step
   
   for (int i = 0; i < forcing.nvars; i++){
-    forcing.info[i].vars = (float*) malloc(sizeof(float) * domain.ntgt * modeltime.nt);
+    forcing.info[i].vars = (float*) malloc(sizeof(float) * domain.ntgt);
   }
 }
 
 void read_forcing_netcdf(model_vars forcing, size_t *start, size_t *count){
-  // Read netvariables from location, setting default value if it's NULL
+  // Read netcdf variables from location, setting default value if it's NULL
   int error;
   for (int i = 0; i < forcing.nvars; i++){
     if (strcmp(forcing.info[i].location, "") == 0 ){
