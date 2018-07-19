@@ -42,10 +42,11 @@ int main (int argc, char *argv[])
   // Allocate information
   allocate_hbv(&modelvars);
   allocate_forcing(&forcing);
+  update_hbv(&modelvars);
   // Aca es donde iteramos por bloques llamando a la f
   // evaluate_model()
   for(int itblock = 0; itblock < modeltime.nt, itblock++){
-    update_forcing(&forcing, i);
+    update_forcing(&forcing, itblock);
     compute_hbv(&modelvars, &forcing);
     // Esta funcion tiene que ser la que se aplica cuda
     //compute_waterbalance();
