@@ -135,8 +135,13 @@ void free_hbv(model_vars modelvars){
   }
 }
 
-void update_param_hbv(model_vars modelvars){
-  // Update HBV parameters
+void update_hbv(model_vars modelvars){
+  // Update HBV parameters, states and flows
+  size_t start[] = {0, 0, 0};
+  size_t count[] = {1, domain.nx, domain.ny};
+  for (int i = 0; i < forcing.nvars; i++){
+    read_hbv_netcdf(&modelvars, start, count);
+  }
 }
 
 void compute_hbv(model_vars modelvars, model_vars forcing){
