@@ -57,32 +57,32 @@ void allocate_forcing(model_vars forcing){
   }
 }
 
-void read_forcing_netcdf(model_vars forcing, size_t *start, size_t *count){
+void read_forcing_netcdf(model_vars *forcing, size_t *start, size_t *count){
   // Read netcdf variables from location, setting default value if it's NULL
   int error;
-  for (int i = 0; i < forcing.nvars; i++){
-    if (strcmp(forcing.info[i].location, "") == 0 ){
+  for (int i = 0; i < forcing->nvars; i++){
+    if (strcmp(forcing->info[i].location, "") == 0 ){
       // Set default value
       for (int j = 0; j < domain.ntgt; j++){
-        forcing.info[i].vars[j] = 0;
+        forcing->info[i].vars[j] = 0;
       }
     }
     else {
       // Read netcdf
-      error = read_netcdf(forcing.info[i].location, forcing.info[i].name, start, count, &forcing.info[i].vars[0]);
+      error = read_netcdf(forcing->info[i].location, forcing->info[i].name, start, count, &forcing->info[i].vars[0]);
       if (error > 0){
-        printf("Error reading %s file \n", forcing.info[i].location);
+        printf("Error reading %s file \n", forcing->info[i].location);
         exit(1);
       }
     }
   }
 }
 
-void update_forcing(model_vars forcing, int i){
+void update_forcing(model_vars *forcing, int i){
   // Puts values into forcing matrixs
   size_t start[] = {i, 0, 0};
   size_t count[] = {1, domain.nx, domain.ny};
-  for (int i = 0; i < forcing.nvars; i++){
+  for (int i = 0; i < forcing->nvars; i++){
     read_forcing_netcdf(&forcing, start, count);
   }
 }
