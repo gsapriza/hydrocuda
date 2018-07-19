@@ -36,7 +36,12 @@ __global__ void hbv_dynamic( float *q    ,
   const int i = blockDim.x*blockDim.y*blockIdx.y*gridDim.x + 
                 blockDim.x*blockDim.y*blockIdx.x + blockDim.x*threadIdx.y + threadIdx.x;
   // In flows
-  qin[i]  = max(pp[i] - icf[i], 0.f);
+  if (pp[i] > icf[i]){
+		qin[i] = pp[i] - icf[i];
+	}
+	else {
+		qin[i] = 0.f;
+	}
   etr[i]  = min(icf[i], etp[i]);
   // State variables
   sm[i]   = sm[i] + qin[i];
@@ -66,24 +71,3 @@ __global__ void hbv_dynamic( float *q    ,
   
 }
 
-
-__device__ float min(float *a, int b){
-  float val = a[0];
-  for (int i = 1; i<b; i++){
-	  if (val>a[i]){
-	    val = a[i];
-	  }
-  }
-  return val;
-}
-
-
-__device__ float max(float *a, int b){
-  float val = a[0];
-  for (int i = 1; i<b; i++){
-	  if (val<a[i]){
-	    val = a[i];
-	  }
-  }
-  return val;
-}
