@@ -87,7 +87,7 @@ void init_hbv();
 void allocate_hbv();
 void free_hbv();
 void read_hbv_netcdf();
-void update_param_hbv();
+void update_hbv();
 void compute_hbv();
 void compute_hbv_cuda();
 
