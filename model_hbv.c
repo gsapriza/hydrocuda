@@ -107,21 +107,21 @@ void allocate_hbv(model_vars modelvars){
   }
 }
 
-void read_hbv_netcdf(model_vars modelvars, size_t *start, size_t *count){
+void read_hbv_netcdf(model_vars *modelvars, size_t *start, size_t *count){
   // Read netvariables from location, setting default value if it's NULL
   int error;
-  for (int i = 0; i < modelvars.nvars; i++){
-    if (strcmp(modelvars.info[i].location, "") == 0 ){
+  for (int i = 0; i < modelvars->nvars; i++){
+    if (strcmp(modelvars->info[i].location, "") == 0 ){
       // Set default value
       for (int j = 0; j < domain.ntgt; j++){
-        modelvars.info[i].vars[j] = 0;
+        modelvars->info[i].vars[j] = 0;
       }
     }
     else {
       // Read netcdf
-      error = read_netcdf(modelvars.info[i].location, modelvars.info[i].name, start, count, &modelvars.info[i].vars[0]);
+      error = read_netcdf(modelvars->info[i].location, modelvars->info[i].name, start, count, &modelvars->info[i].vars[0]);
       if (error > 0){
-        printf("Error reading %s file \n", modelvars.info[i].location);
+        printf("Error reading %s file \n", modelvars->info[i].location);
         exit(1);
       }
     }
@@ -135,11 +135,11 @@ void free_hbv(model_vars modelvars){
   }
 }
 
-void update_hbv(model_vars modelvars){
+void update_hbv(model_vars *modelvars){
   // Update HBV parameters, states and flows
   size_t start[] = {0, 0, 0};
   size_t count[] = {1, domain.nx, domain.ny};
-  for (int i = 0; i < forcing.nvars; i++){
+  for (int i = 0; i < modelvars->nvars; i++){
     read_hbv_netcdf(&modelvars, start, count);
   }
 }
