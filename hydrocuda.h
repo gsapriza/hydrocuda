@@ -11,8 +11,8 @@
 typedef struct {
   struct ini_t *config;         // Configuration to read options
   char          hydroModel[10]; // Hydrological model
-  char          domainModel[8]; // Basin discretization
-  char          meteoModel[5];  // Time series options
+  char          domainModel[10]; // Basin discretization
+  char          meteoModel[10];  // Time series options
   int           istimeblock;    // 1 if divide time in block, 0 if not
 } model_option;
 
@@ -59,7 +59,7 @@ typedef struct{
   int    indx;           // Variable index
   int    tipe;           // 1=Flux, 2=Param, 3=StateVariable, 4=forcing
   int    timetipe;       // 1=cte or only one time, 2=ntblock times, 3=all times
-  char   location[150];  // Location of time series data
+  char   location[250];  // Location of time series data
   float *vars;           // Time series
 } vars_info;
 
