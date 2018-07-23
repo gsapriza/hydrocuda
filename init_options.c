@@ -5,12 +5,13 @@
 * using c and cuda
 *******************/
 
+#include <stdio.h>
 #include <stdlib.h>
 #include "hydrocuda.h"
 
+extern model_option options;
 void init_modeloptions(){
   // Initialize model basic options
-  extern model_option options; //call options decleared in main
   ini_sget(options.config, "HydroModel", "hydro_model", "%s", options.hydroModel);
   ini_sget(options.config, "ModelDomain", "support_type", "%s", options.domainModel);
   ini_sget(options.config, "MeteoModel", "forcing_type", "%s",  options.meteoModel);
