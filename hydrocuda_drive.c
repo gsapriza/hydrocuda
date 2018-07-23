@@ -14,19 +14,20 @@ model_option options;
 model_domain domain;
 model_time modeltime;
 
-int main (int argc, char *argv[])
-{
+int main (int argc, char *argv[]){
   // Variable declraration
   model_vars forcing;
   model_vars modelvars;
   
   // Model Initialization
   if (argc < 2){
-    printf("Usage : ./a.out <filename>");
-    exit(0);
+    printf("Usage : ./hydrocua <filename>\n");
+    exit(1);
   }
+  
   //  To read .ini files
   options.config = ini_load(argv[1]);
+  
   // Initialize basic model options
   init_modeloptions();
   init_domain();
@@ -39,10 +40,12 @@ int main (int argc, char *argv[])
   //}
   init_hbv(&modelvars);
   init_forcing(&forcing);
+  
   // Allocate information
   allocate_hbv(&modelvars);
   allocate_forcing(&forcing);
   update_hbv(&modelvars);
+  
   // Aca es donde iteramos por bloques llamando a la f
   // evaluate_model()
   for(int itblock = 0; itblock < modeltime.nt; itblock++){
@@ -54,9 +57,11 @@ int main (int argc, char *argv[])
     // Leemos el siguient bloque de datos temporales
     //update_forcing();
   }
+  
   // Free information
   ini_free(options.config);
   free_forcing(&forcing);
   free_hbv(&modelvars);
+  
   return 0;
 }
