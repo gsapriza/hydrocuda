@@ -15,15 +15,12 @@ extern model_option options;
 extern model_domain domain;
 extern model_time modeltime;
 
-void init_hbv(model_vars modelvars){
+void init_hbv(model_vars *modelvars){
   // Initialize parameter, states and flows
-//   modelvars.nparams = 10;
-//   modelvars.nstates = 3;
-//   modelvars.nflows = 9;
-  modelvars.nvars = 22; // HBV: 10 params + 3 states + 9 flow
+  modelvars->nvars = 23; // HBV: 10 params + 3 states + 10 flow
   // For loading variables options
-  aux_ids *var_ids = (aux_ids*) malloc(modelvars.nvars * sizeof(aux_ids));
-  int vtipe[modelvars.nvars];
+  aux_ids *var_ids = (aux_ids*) malloc(modelvars->nvars * sizeof(aux_ids));
+  int vtipe[modelvars->nvars];
   //tipe variable: 1=Flux, 2=Param, 3=StateVariable
   // Parameters
   strcpy(var_ids[0].ids,"icf");   // Infiltration
@@ -72,38 +69,40 @@ void init_hbv(model_vars modelvars){
   vtipe[20] = 1;
   strcpy(var_ids[21].ids,"qlz");  // Base flow
   vtipe[21] = 1;
+  strcpy(var_ids[22].ids,"q");    // Final flow
+  vtipe[22] = 1;
   
   // Auxiliar to read integer
   char caux[15];
   // Auxiliar
-  aux_ids *var_ids_aux = (aux_ids*) malloc(modelvars.nvars * sizeof(aux_ids));
+  aux_ids *var_ids_aux = (aux_ids*) malloc(modelvars->nvars * sizeof(aux_ids));
   // Allocate vars_info
-  modelvars.info = (vars_info*) malloc(modelvars.nvars * sizeof(vars_info));
-  for (int i = 0; i < modelvars.nvars; i++){
+  modelvars->info = (vars_info*) malloc(modelvars->nvars * sizeof(vars_info));
+  for (int i = 0; i < modelvars->nvars; i++){
     // Fill auxiliar
     strcpy(var_ids_aux[i].ids,var_ids[i].ids);
     // Read variables
-    ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_units"), "%s", modelvars.info[i].units);
+    ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_units"), "%s", modelvars->info[i].units);
     strcpy(var_ids[i].ids,var_ids_aux[i].ids);
-    if (strcmp(modelvars.info[i].units, "") == 0 ){
-      strcpy(modelvars.info[i].units, ""); //hacer esto??
+    if (strcmp(modelvars->info[i].units, "") == 0 ){
+      strcpy(modelvars->info[i].units, ""); //hacer esto??
     }
-    ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_location"), "%s", modelvars.info[i].location);
+    ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_location"), "%s", modelvars->info[i].location);
     strcpy(var_ids[i].ids,var_ids_aux[i].ids);
     // Variable known declaration
-    strcpy(modelvars.info[i].name,var_ids_aux[i].ids);
-    modelvars.info[i].indx = i;
-    modelvars.info[i].tipe = vtipe[i];
+    strcpy(modelvars->info[i].name,var_ids_aux[i].ids);
+    modelvars->info[i].indx = i;
+    modelvars->info[i].tipe = vtipe[i];
     ini_sget(options.config, "HydroModel", strcat(var_ids[i].ids,"_timetipe"), "%s", caux);
     strcpy(var_ids[i].ids,var_ids_aux[i].ids);
-    modelvars.info[i].timetipe = atoi(caux);
+    modelvars->info[i].timetipe = atoi(caux);
   }
 }
 
-void allocate_hbv(model_vars modelvars){
+void allocate_hbv(model_vars *modelvars){
   // Allocate parametes, state and flows matrix
-  for (int i = 0; i < modelvars.nvars; i++){
-    modelvars.info[i].vars = (float*) malloc(sizeof(float) * domain.ntgt);
+  for (int i = 0; i < modelvars->nvars; i++){
+    modelvars->info[i].vars = (float*) malloc(sizeof(float) * domain.ntgt);
   }
 }
 
@@ -128,23 +127,23 @@ void read_hbv_netcdf(model_vars *modelvars, size_t *start, size_t *count){
   }
 }
 
-void free_hbv(model_vars modelvars){
+void free_hbv(model_vars *modelvars){
   // Free HBV parameters, states and flows
-  for (int i = 0; i < modelvars.nvars; i++){
-    free(modelvars.info[i].vars);
+  for (int i = 0; i < modelvars->nvars; i++){
+    free(modelvars->info[i].vars);
   }
 }
 
 void update_hbv(model_vars *modelvars){
   // Update HBV parameters, states and flows
-  size_t start[] = {0, 0, 0};
-  size_t count[] = {1, domain.nx, domain.ny};
+  size_t start[] = {0, 0};
+  size_t count[] = {domain.nx, domain.ny};
   for (int i = 0; i < modelvars->nvars; i++){
-    read_hbv_netcdf(&modelvars, start, count);
+    read_hbv_netcdf(modelvars, start, count);
   }
 }
 
-void compute_hbv(model_vars modelvars, model_vars forcing){
+void compute_hbv(model_vars *modelvars, *model_vars forcing){
   // Run HBV model in C on one time
   float faux[2];
   int pp_i    = getindx(forcing, "pp");
@@ -174,55 +173,55 @@ void compute_hbv(model_vars modelvars, model_vars forcing){
   int q_i     = getindx(modelvars, "q");
   for (int i = 0; i < domain.ntgt; i++){
     // In flows
-    faux[0] = forcing.info[pp_i].vars[i] - modelvars.info[icf_i].vars[i];
+    faux[0] = forcing->info[pp_i].vars[i] - modelvars->info[icf_i].vars[i];
     faux[1] = 0.f;
-    modelvars.info[qin_i].vars[i]  = max(faux, 2);
-    faux[0] = modelvars.info[icf_i].vars[i];
-    faux[1] = forcing.info[etp_i].vars[i];
-    modelvars.info[etr_i].vars[i]  = min(faux, 2);
+    modelvars->info[qin_i].vars[i]  = max(faux, 2);
+    faux[0] = modelvars->info[icf_i].vars[i];
+    faux[1] = forcing->info[etp_i].vars[i];
+    modelvars->info[etr_i].vars[i]  = min(faux, 2);
     // State variables
-    modelvars.info[sm_i].vars[i]   = modelvars.info[sm_i].vars[i] + modelvars.info[qin_i].vars[i];
-    faux[0] = modelvars.info[sm_i].vars[i] - modelvars.info[fc_i].vars[i];
+    modelvars->info[sm_i].vars[i]   = modelvars->info[sm_i].vars[i] + modelvars->info[qin_i].vars[i];
+    faux[0] = modelvars->info[sm_i].vars[i] - modelvars->info[fc_i].vars[i];
     faux[1] = 0.f;
-    modelvars.info[qdr_i].vars[i]  = max(faux, 2);
-    modelvars.info[sm_i].vars[i]   = modelvars.info[sm_i].vars[i] - modelvars.info[qdr_i].vars[i];
-    modelvars.info[inet_i].vars[i] = modelvars.info[qin_i].vars[i] - modelvars.info[qdr_i].vars[i];
-    modelvars.info[sp_i].vars[i]   = pow(modelvars.info[sm_i].vars[i] / modelvars.info[fc_i].vars[i], modelvars.info[beta_i].vars[i]) * modelvars.info[inet_i].vars[i];
-    modelvars.info[sm_i].vars[i]   = modelvars.info[sm_i].vars[i] - modelvars.info[sp_i].vars[i];
+    modelvars->info[qdr_i].vars[i]  = max(faux, 2);
+    modelvars->info[sm_i].vars[i]   = modelvars->info[sm_i].vars[i] - modelvars->info[qdr_i].vars[i];
+    modelvars->info[inet_i].vars[i] = modelvars->info[qin_i].vars[i] - modelvars->info[qdr_i].vars[i];
+    modelvars->info[sp_i].vars[i]   = pow(modelvars->info[sm_i].vars[i] / modelvars->info[fc_i].vars[i], modelvars->info[beta_i].vars[i]) * modelvars->info[inet_i].vars[i];
+    modelvars->info[sm_i].vars[i]   = modelvars->info[sm_i].vars[i] - modelvars->info[sp_i].vars[i];
     // Evapotranspirations
-    forcing.info[etp_i].vars[i]    = forcing.info[etp_i].vars[i] - modelvars.info[etr_i].vars[i];
-    faux[0] = modelvars.info[sm_i].vars[i] * forcing.info[etp_i].vars[i] / (modelvars.info[lp_i].vars[i] * modelvars.info[fc_i].vars[i]);
-    faux[1] = forcing.info[etp_i].vars[i];
+    forcing->info[etp_i].vars[i]    = forcing->info[etp_i].vars[i] - modelvars->info[etr_i].vars[i];
+    faux[0] = modelvars->info[sm_i].vars[i] * forcing->info[etp_i].vars[i] / (modelvars->info[lp_i].vars[i] * modelvars->info[fc_i].vars[i]);
+    faux[1] = forcing->info[etp_i].vars[i];
     faux[0] = min(faux, 2);
-    faux[1] = modelvars.info[sm_i].vars[i];
-    modelvars.info[etr_i].vars[i]  = min(faux, 2);
-    modelvars.info[sm_i].vars[i]   = modelvars.info[sm_i].vars[i] - modelvars.info[etr_i].vars[i];
+    faux[1] = modelvars->info[sm_i].vars[i];
+    modelvars->info[etr_i].vars[i]  = min(faux, 2);
+    modelvars->info[sm_i].vars[i]   = modelvars->info[sm_i].vars[i] - modelvars->info[etr_i].vars[i];
     // Volume states
-    faux[0] = modelvars.info[perc_i].vars[i];
-    faux[1] = modelvars.info[qdr_i].vars[i] + modelvars.info[sp_i].vars[i];
-    modelvars.info[vlz_i].vars[i]  = modelvars.info[vlz_i].vars[i] + min(faux, 2);
+    faux[0] = modelvars->info[perc_i].vars[i];
+    faux[1] = modelvars->info[qdr_i].vars[i] + modelvars->info[sp_i].vars[i];
+    modelvars->info[vlz_i].vars[i]  = modelvars->info[vlz_i].vars[i] + min(faux, 2);
     faux[0] = 0.f;
-    faux[1] = modelvars.info[qdr_i].vars[i] + modelvars.info[sp_i].vars[i] - modelvars.info[perc_i].vars[i];
-    modelvars.info[vuz_i].vars[i]  = modelvars.info[vuz_i].vars[i] + max(faux, 2);
+    faux[1] = modelvars->info[qdr_i].vars[i] + modelvars->info[sp_i].vars[i] - modelvars->info[perc_i].vars[i];
+    modelvars->info[vuz_i].vars[i]  = modelvars->info[vuz_i].vars[i] + max(faux, 2);
     // Capillar flow
-    modelvars.info[qcf_i].vars[i]  = modelvars.info[cflux_i].vars[i] * (modelvars.info[fc_i].vars[i] - modelvars.info[sm_i].vars[i]) / modelvars.info[fc_i].vars[i];
-    faux[0] = modelvars.info[vuz_i].vars[i];
-    faux[1] = modelvars.info[qcf_i].vars[i];
-    modelvars.info[sm_i].vars[i]   = modelvars.info[sm_i].vars[i] + min(faux, 2);
-    faux[0] = modelvars.info[vuz_i].vars[i] - modelvars.info[qcf_i].vars[i];
+    modelvars->info[qcf_i].vars[i]  = modelvars->info[cflux_i].vars[i] * (modelvars->info[fc_i].vars[i] - modelvars->info[sm_i].vars[i]) / modelvars->info[fc_i].vars[i];
+    faux[0] = modelvars->info[vuz_i].vars[i];
+    faux[1] = modelvars->info[qcf_i].vars[i];
+    modelvars->info[sm_i].vars[i]   = modelvars->info[sm_i].vars[i] + min(faux, 2);
+    faux[0] = modelvars->info[vuz_i].vars[i] - modelvars->info[qcf_i].vars[i];
     faux[1] = 0.f;
-    modelvars.info[vuz_i].vars[i]  = max(faux, 2);
+    modelvars->info[vuz_i].vars[i]  = max(faux, 2);
     // Quick and inter flow
-    faux[0] = modelvars.info[kq_i].vars[i] * (modelvars.info[vuz_i].vars[i] - modelvars.info[uzl_i].vars[i]);
+    faux[0] = modelvars->info[kq_i].vars[i] * (modelvars->info[vuz_i].vars[i] - modelvars->info[uzl_i].vars[i]);
     faux[1] = 2;
-    modelvars.info[qq_i].vars[i]   = max(faux, 2);
-    faux[0] = modelvars.info[uzl_i].vars[i];
-    faux[1] = modelvars.info[vuz_i].vars[i];
-    modelvars.info[qi_i].vars[i]   = modelvars.info[ki_i].vars[i] * min(faux, 2);
+    modelvars->info[qq_i].vars[i]   = max(faux, 2);
+    faux[0] = modelvars->info[uzl_i].vars[i];
+    faux[1] = modelvars->info[vuz_i].vars[i];
+    modelvars->info[qi_i].vars[i]   = modelvars->info[ki_i].vars[i] * min(faux, 2);
     // Base flow
-    modelvars.info[qlz_i].vars[i]  = modelvars.info[klz_i].vars[i] * modelvars.info[vlz_i].vars[i];
+    modelvars->info[qlz_i].vars[i]  = modelvars->info[klz_i].vars[i] * modelvars->info[vlz_i].vars[i];
     // Final flow
-    modelvars.info[q_i].vars[i]    = modelvars.info[qlz_i].vars[i] + modelvars.info[qi_i].vars[i] + modelvars.info[qq_i].vars[i];
+    modelvars->info[q_i].vars[i]    = modelvars->info[qlz_i].vars[i] + modelvars->info[qi_i].vars[i] + modelvars->info[qq_i].vars[i];
   }
 }
 
