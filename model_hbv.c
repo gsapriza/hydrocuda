@@ -143,7 +143,7 @@ void update_hbv(model_vars *modelvars){
   }
 }
 
-void compute_hbv(model_vars *modelvars, *model_vars forcing){
+void compute_hbv(model_vars *modelvars, model_vars *forcing){
   // Run HBV model in C on one time
   float faux[2];
   int pp_i    = getindx(forcing, "pp");
