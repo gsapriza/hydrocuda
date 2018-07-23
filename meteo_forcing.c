@@ -36,9 +36,9 @@ void init_forcing(model_vars *forcing){
     // Fill auxiliar
     strcpy(met_ids_aux[i].ids,met_ids[i].ids);
     // Read variables
-    ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_units"), "%s", forcing.info[i].units);
+    ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_units"), "%s", forcing->info[i].units);
     strcpy(met_ids[i].ids,met_ids_aux[i].ids);
-    ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_location"), "%s", forcing.info[i].location);
+    ini_sget(options.config, "MeteoModel", strcat(met_ids[i].ids,"_location"), "%s", forcing->info[i].location);
     strcpy(met_ids[i].ids,met_ids_aux[i].ids);
     // Variable known declaration
     strcpy(forcing->info[i].name,met_ids_aux[i].ids);
